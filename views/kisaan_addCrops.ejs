@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Crops</title>
+</head>
+<body>
+    <h1>Add Crops</h1>
+    <form action="/kisaan/addCrops" method="POST" id="cropForm">
+        <div id="formContainer">
+            <div class="pair">
+                <label for="crop">Select Crop:</label>
+                <select name="crop[]" class="crop-select" required onchange="updatePair(this)">
+                    <option value="">Select Crop</option>
+                    <option value="rice">Rice</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="maize">Maize</option>
+                </select>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="riceQty" class="crop-quantity" required>
+            </div>
+        </div>
+        <button type="button" id="addCrop">Add More</button>
+        <button type="submit">Add Crops</button>
+    </form>
+
+    <script>
+
+        document.getElementById('addCrop').addEventListener('click', function() {
+            var formContainer = document.getElementById('formContainer');
+            var newField = document.createElement('div');
+            newField.classList.add('pair');
+            newField.innerHTML = `
+                <label for="crop">Select Crop:</label>
+                <select name="crop[]" class="crop-select" required onchange="updatePair(this)">
+                    <option value="">Select Crop</option>
+                    <option value="rice">Rice</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="maize">Maize</option>
+                </select>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="riceQty" class="crop-quantity" required>
+            `;
+            formContainer.appendChild(newField);
+            counter++;
+        });
+
+        function updatePair(select) {
+            var selectedCrop = select.value;
+            var targetInput = select.parentElement.querySelector('.crop-quantity');
+            targetInput.name = selectedCrop;
+        }
+    </script>
+</body>
+</html>

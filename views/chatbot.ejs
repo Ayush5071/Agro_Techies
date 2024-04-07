@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button id="send-btn">Send</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    var sendBtn = document.getElementById('send-btn');
+    var userInput = document.getElementById('user-input');
+    var chatMessages = document.getElementById('chat-messages');
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function(e) {
+        if (e.which == 13) {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        var message = userInput.value.trim();
+        if (message !== '') {
+            appendMessage('user', message);
+            userInput.value = '';
+
+            fetch('/api/chatbot?message=' + encodeURIComponent(message))
+                .then(response => response.json())
+                .then(data => {
+                    appendMessage('bot', data.answer);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
+    function appendMessage(sender, message) {
+        var messageClass = sender === 'user' ? 'user-message' : 'bot-message';
+        var messageElement = document.createElement('div');
+        messageElement.className = messageClass;
+        messageElement.textContent = message;
+        chatMessages.appendChild(messageElement);
+    }
+});
+
+    </script>
+</body>
+</html>

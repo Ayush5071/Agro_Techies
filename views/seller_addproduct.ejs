@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/seller/addproduct" method="post" enctype="multipart/form-data">
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" ></textarea><br>
+      
+        <label for="features">Features:</label><br>
+        <textarea id="features" name="features" rows="4" cols="50" ></textarea><br>
+      
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price" ><br>
+      
+        <label for="productName">Product Name:</label><br>
+        <input type="text" id="productName" name="productName" ><br>
+
+        <input type="file" name="productImage" id="productImage">
+      
+        <input type="submit" value="Submit">
+      </form>   
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Sharing</title>
+</head>
+<body>
+    <form action="/officer/blog" method="post">
+        <input name="heading" placeholder="heading" type="text">
+        <input name="content" placeholder="content" type="text">
+        <input name="elligibility" placeholder="elligibility" type="text">
+        <input name="schemeLink" placeholder="schemeLink" type="text">
+        <input type="submit" value="submit">
+    </form>
+
+<button onclick="shareOnWhatsApp()">Share on WhatsApp</button>
+<button onclick="shareOnInstagram()">Share on Instagram</button>
+<form action="/kisaan/image" method="post" enctype="multipart/form-data">
+  <input type="file" name="image" id="image">
+  <input type="submit" value="submit">
+</form>
+
+<!-- Add more share buttons for other platforms as needed -->
+
+<script>
+function shareOnWhatsApp() {
+  const blogTitle = 'test';
+  const shareableLink = ".....";
+  const message = `Check out this blog: ${blogTitle} - ${shareableLink}`;
+  const whatsappURL = `whatsapp://send?text=${encodeURIComponent(message)}`;
+  window.location.href = whatsappURL;
+}
+
+function shareOnInstagram() {
+  // Instagram does not allow direct sharing programmatically
+  // You can encourage users to share manually with pre-filled content
+  alert('Share on Instagram: Copy the link and open Instagram to share manually.');
+}
+</script>
+
+</body>
+</html>

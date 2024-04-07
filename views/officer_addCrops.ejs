@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Insert Crop Prices</title>
+</head>
+<body>
+    <h1>Bulk Insert Crop Prices</h1>
+    <form id="cropPriceForm" action="/officer/marketPlace" method="post" enctype="multipart/form-data">
+        <div id="cropInputs">
+            <div class="cropInput">
+                <label for="cropName">Crop Name:</label>
+                <input type="text" name="cropName[]" required>
+                <label for="price">Price:</label>
+                <input type="number" name="price[]" required>
+                <label for="image">Image URL:</label>
+                <input type="file" name="image[]" required>
+            </div>
+        </div>
+        <button type="button" id="addCrop">Add More</button>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('addCrop').addEventListener('click', function() {
+            var cropInputs = document.getElementById('cropInputs');
+            var newCropInput = document.createElement('div');
+            newCropInput.classList.add('cropInput');
+            newCropInput.innerHTML = `
+                <label for="cropName">Crop Name:</label>
+                <input type="text" name="cropName[]" required>
+                <label for="price">Price:</label>
+                <input type="number" name="price[]" required>
+                <label for="image">Image URL:</label>
+                <input type="file" name="image[]" required>
+            `;
+            cropInputs.appendChild(newCropInput);
+        });
+    </script>
+</body>
+</html>
