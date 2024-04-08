@@ -30,6 +30,10 @@ const kisaanSchema = new Schema({
     country:String,
     landArea:Number,
     profileImage:String,
+    orders : {
+        type:Schema.Types.ObjectId,
+        ref:"Product"
+    },
 },
 {
     timestamps:true

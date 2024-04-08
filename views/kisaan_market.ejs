@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Card</title>
+  <style>
+
+    .products-card {
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-bottom: 16px;
+    }
+
+    .products-name {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .products-description {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .products-price {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .view-more-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+
+    .view-more-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+    <% products.forEach(product => { %>
+<div class="products-card">
+        
+        <img src="<%= product.productImage %>" alt="<%= product.name %>" class="product-image">
+       <div class="products-details">
+       <div class="products-name"><%= product.productName %></div>
+       <div class="products-description"><%= product.description %></div>
+       <div class="products-price">$<%= product.price %></div>
+       <a href="/kisaan/product/<%= product.id %>" class="view-more-button">View More</a>
+    </div>
+  </div>
+   <% }) %>
+  
+
+</body>
+</html>
