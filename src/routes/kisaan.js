@@ -67,10 +67,13 @@ router.get('/addCrops',isLoggedIn,addCropsForm)
   
 
 router.get("/blog",isLoggedIn,async (req,res)=>{
-  console.log(req.user.username)
-  console.log(req.session.passport.user)
   const blogs = await Blog.find()
-  res.send(blogs)
+  res.render('kisaanBlog',{blogs})
+})
+
+router.get('/blogs/:id',isLoggedIn,async(req,res)=>{
+  const blog = await Blog.findOne({_id:req.params.id})
+  res.render('kisaan_blog_detail',{blog})
 })
 router.get("/market",isLoggedIn,async (req,res)=>{
   const product = await Product.find();
