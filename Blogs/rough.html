@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dialog Box</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <button class="bg-red-700 w-40 rounded-lg px-2 py-2 mx-auto" onclick="showDialog()">Comments</button>
+
+  <div id="dialog" class="hidden bg-white border border-gray-300 p-4 rounded-lg shadow-lg w-64 absolute top-0 left-0 right-0 mx-auto mt-16">
+    <h2 id="personName" class="text-lg font-bold mb-2"></h2>
+    <textarea id="comment" class="w-full h-24 border border-gray-300 rounded-lg p-2" placeholder="Write your comment here"></textarea>
+    <button class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2" onclick="submitComment()">Submit</button>
+    <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg ml-2 mt-2" onclick="closeDialog()">Close</button>
+  </div>
+
+  <script src="">
+    // Function to show the dialog box
+function showDialog() {
+  var dialog = document.getElementById("dialog");
+  dialog.classList.remove("hidden");
+
+  // Assume the person's name and comment are retrieved from a data source
+  var personName = "John Doe";
+  var comment = "This is John Doe's comment.";
+
+  // Display the person's name and comment in the dialog box
+  document.getElementById("personName").innerText = personName;
+  document.getElementById("comment").value = comment;
+}
+
+// Function to submit comment (not fully implemented)
+function submitComment() {
+  // Retrieve and handle the comment here
+  var comment = document.getElementById("comment").value;
+  console.log("Submitted comment:", comment);
+
+  // For demonstration, let's just close the dialog after submission
+  closeDialog();
+}
+
+// Function to close the dialog box
+function closeDialog() {
+  var dialog = document.getElementById("dialog");
+  dialog.classList.add("hidden");
+}
+
+  </script>
+</body>
+</html>

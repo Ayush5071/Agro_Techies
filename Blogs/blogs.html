@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add your custom styles here if needed */
+    </style>
+</head>
+
+<body class="bg-slate-900">
+    <!-- <div class="flex">
+        <div class="w-1/3 p-4">
+            <h2 class="text-lg font-bold">Authors</h2>
+            <ul>
+                <li class="author cursor-pointer" data-author="author1">Author 1</li>
+                <li class="author cursor-pointer" data-author="author2">Author 2</li>
+                <li class="author cursor-pointer" data-author="author3">Author 3</li>
+                <li class="author cursor-pointer" data-author="author4">Author 4</li>
+                <li class="author cursor-pointer" data-author="author5">Author 5</li>
+            </ul>
+        </div>
+        <div id="blog-dialog" class="w-2/3 p-4 hidden">
+            <button id="close-dialog" class="absolute top-2 right-2 px-2 py-1 bg-gray-300 rounded"
+                onclick="closeDialog()">Close</button>
+            <div id="blog-content" class="border-black dialog-box"></div>
+        </div>
+    </div> -->
+
+
+    <div class="flex justify-center items-center mt-2">
+        <h1 class="text-white text-4xl font-bold">BLOGS</h1>
+    </div>
+    <div class="mt-12 w-600">
+        <div class="max-w-sm mx-auto bg-white rounded-xl overflow-hidden
+        md:max-w-2xl">
+            <!-- overflow-hidden to make image rounded -->
+            <div class="md:flex">
+                <!-- md:flex to send content div to below img in smaller screens -->
+                <div>
+                    <img class="h-48 w-full object-cover md:h-full md:w-48"
+                        src="official1.jpg" alt="">
+                </div>
+                <div class="p-8 bg-cover bg-center "
+                    style="background-image: url('—Pngtree—agricultural\ agricultural\ rice\ field\ background_1132094.jpg')">
+                    <div class="flex gap-8 items-center justify-between">
+
+                        <div class="uppercase tracking-wide text-indigo-500 font-semibold mt-1 text-2xl">
+                            FARMING AND AGRICULTURE
+                        </div>
+                        <a class="block mt-1 text-lg font-medium text-black hover:text-blue-700" href="#">
+                            MR. MANMOHAN AGARWAL </a>
+                        <!-- <span class="bg-yellow-500 p-[2px] px-[14px]">power</span> of it.</a> -->
+                    </div>
+                    <!-- square brackets [ ] to apply specific pixel values directly to utility classes. This allows you to override the default spacing scale and use custom pixel values for margin, padding, or any other dimension-related utility class.
+p-[2px] applies a padding of 2px to all sides of the element.
+px-[14px] applies a horizontal padding of 14px to the element. -->
+                    <div class="flex gap-20 ">
+
+                        <p class="mt-6 text-slate-500 text-xl">24/02/2024</p>
+                        <p class="mt-6 text-slate-500 text-xl">16:48</p>
+                        <button class="mt-2 bg-red-700 text-white rounded-lg p-2 w-40  hover:text-blue-700"><a
+                                href="blogs1.html">READ MORE</a></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-12 w-600">
+        <div class="max-w-sm mx-auto bg-white rounded-xl overflow-hidden
+        md:max-w-2xl">
+            <!-- overflow-hidden to make image rounded -->
+            <div class="md:flex">
+                <!-- md:flex to send content div to below img in smaller screens -->
+                <div>
+                    <img class="h-48 w-full object-cover md:h-full md:w-48"
+                        src="official2.avif" alt="">
+                </div>
+                <div class="p-8 bg-cover bg-center "
+                    style="background-image: url('—Pngtree—agricultural\ agricultural\ rice\ field\ background_1132094.jpg')">
+                    <div class="flex gap-8 items-center justify-between">
+
+                        <div class="uppercase tracking-wide text-indigo-500 font-semibold mt-1 text-2xl">
+                            IRRIGATION
+                        </div>
+                        <div class="block mt-1 mr-1 text-lg font-medium text-black hover:text-blue-700 text-right"
+                            href="#">
+                            MR. AGNIHOTRI JAISWAL </div>
+                        <!-- <span class="bg-yellow-500 p-[2px] px-[14px]">power</span> of it.</a> -->
+                    </div>
+                    <!-- square brackets [ ] to apply specific pixel values directly to utility classes. This allows you to override the default spacing scale and use custom pixel values for margin, padding, or any other dimension-related utility class.
+p-[2px] applies a padding of 2px to all sides of the element.
+px-[14px] applies a horizontal padding of 14px to the element. -->
+                    <div class="flex gap-20 ">
+
+                        <p class="mt-6 text-slate-500 text-xl">28/02/2024</p>
+                        <p class="mt-6 text-slate-500 text-xl">20:02</p>
+                        <button class="mt-2 bg-red-700 text-white rounded-lg p-2 w-40  hover:text-blue-700"><a
+                                href="blogs2.html">READ MORE</a></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const authors = document.querySelectorAll('.author');
+            const blogDialog = document.getElementById('blog-dialog');
+            const closeDialogBtn = document.getElementById('close-dialog');
+            const blogContent = document.getElementById('blog-content');
+
+            const blogData = {
+                "author1": {
+                    title: "Blog by John Doe",
+                    content: "John Doe's blog content goes here..."
+                },
+                "author2": {
+                    title: "Blog by Jane Smith",
+                    content: "Jane Smith's blog content goes here..."
+                },
+                "author3": {
+                    title: "Blog by Souvik Sarkar",
+                    content: "Souvik Sarkar's blog content goes here..."
+                },
+                "author4": {
+                    title: "Blog by Ayush Tiwari",
+                    content: "Ayush Tiwari's blog content goes here..."
+                },
+                "author5": {
+                    title: "Blog by Vaishnavi Tiwari",
+                    content: "Vaishnavi Tiwari's blog content goes here..."
+                }
+            };
+
+            authors.forEach(author => {
+                author.addEventListener('click', function () {
+                    // Simulate loading the blog content for the selected author
+                    const authorName = this.dataset.author;
+                    // const blogData = getBlogData(authorName);
+                    const data = blogData[authorName];
+                    // Display blog content in the dialog
+                    // blogContent.innerHTML = `<h2 class="text-lg font-bold">${blogData.title}</h2>
+                    //                          <p>${blogData.content}</p>`;
+                    blogContent.innerHTML = `<h2 class="text-lg font-bold">${data.title}</h2>
+                                             <p>${data.content}</p>`;
+                    blogContent.style.border = "1px solid black";
+                    blogContent.style.height = "200px";
+                    // blogContent.style.width = "500px";
+                    // Show the dialog
+                    blogDialog.classList.remove('hidden');
+                });
+            });
+
+            // Close dialog button functionality
+            function closeDialog() {
+                blogDialog.classList.add('hidden');
+            }
+
+            // Function to simulate fetching blog data
+            // function getBlogData(author) {
+            //     // Simulated blog data for demonstration purposes
+            //     const blogData = {
+            //         author: author,
+            //         title: `Blog by ${author}`,
+            //         content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`
+            //     };
+            //     return blogData;
+            // }
+        });
+    </script>
+</body>
+
+</html>
