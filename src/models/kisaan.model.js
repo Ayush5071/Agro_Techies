@@ -1,6 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 import plm from "passport-local-mongoose"
 
+const soldCropSchema = new Schema({
+    cropName: String,
+    quantitySold: Number,
+    pricePerKg: Number,
+    totalPrice: Number
+});
 
 const kisaanSchema = new Schema({
     username: {
@@ -34,6 +40,11 @@ const kisaanSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"Product"
     },
+    soldCrops: [soldCropSchema] ,
+    balanceHistory:{
+        type:Array,
+        default:[]
+    }
 },
 {
     timestamps:true

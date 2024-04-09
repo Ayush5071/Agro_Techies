@@ -8,33 +8,57 @@ import { Seller } from "../models/seller.model.js";
 import  passport  from "passport";
 import { cropPrice } from '../models/officerCrop.model.js';
 import { upload } from "../middlewares/multer.middleware.js";
-import { uploadOnCloudinary } from "../middlewares/cloudinary.middleware.js";
+import { uploadOnCloudinary} from "../middlewares/cloudinary.middleware.js";
 import { Mongoose } from "mongoose";
 
-router.post("/blog",isLoggedIn,async (req,res)=>{
+router.post("/blog",isLoggedIn,upload.single('image'),async (req,res)=>{
     const username = req.user.username;
     console.log(username)
     const officer = await Officer.findByUsername(username);
     console.log("data of officer",officer);
+    const filePath = req.file.path;
+    const Cloudinary = await uploadOnCloudinary(filePath);
+    const url = Cloudinary.url
+    console.log(url)
     const data = await Blog.create({
         heading:req.body.heading,
         content:req.body.content,
         officer:officer.fullName,
         designation:officer.designation,
         elligibility:req.body.elligibility,
-        schemeLink:req.body.schemeLink
+        schemeLink:req.body.schemeLink,
+        image: url
     })
     await data.save()
     officer.blogs.push(data._id)
+    officer.save()
+
+    
     res.json(data);
 })
+router.delete('/blog/:id', isLoggedIn, async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        await Blog.findByIdAndDelete(blogId);
+        res.status(200).json({ message: 'Blog post deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting blog post:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 router.get("/home",isLoggedIn,(req,res)=>{
     res.send("OFFICERS - HOME")
 })
+router.get("/blogt",isLoggedIn,async function(req,res){
+    const blogs = Blog.find()
+    const officer = await Officer.findOne({username : req.session.passport.user})
+    console.log(officer)
+    res.render('blogToolkit',{blogs})
+})
 router.get("/blog",isLoggedIn,async function(req,res){
-    const username = req.user
-    console.log("olele ",username)
-    res.render('blog')
+    const blogs = Blog.find();
+    res.render('blog',{blogs})
 })
 router.get("/signup",(req,res)=>{
     res.render("officer.auth.ejs")
@@ -112,10 +136,6 @@ router.delete('/marketPlace/:cropId', async (req, res) => {
         res.status(500).send('Error deleting crop');
     }
 });
-
-
-
-
 
 
 router.get('/addCrops',(req,res)=>{
