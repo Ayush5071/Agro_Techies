@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-slate-900 h-screen">
+
+    <div class="flex justify-center items-center mt-4">
+        <h1 class="text-white text-4xl font-bold">BLOG BY DR. AGNIHOTRI JAISWAL</h1>
+    </div>
+    <div class="mt-16 w-480 h-680">
+        <div class="max-w-sm mx-auto bg-white rounded-xl overflow-hidden
+        md:max-w-2xl">
+            <!-- overflow-hidden to make image rounded -->
+            <div class="md:flex">
+                <!-- md:flex to send content div to below img in smaller screens -->
+                <div>
+                    <img class="h-480 w-full object-cover md:h-80 md:w-4"
+                        src="official2.avif" alt="">
+                </div>
+                <div class="p-8 bg-cover bg-center "
+                    style="background-image: url('—Pngtree—agricultural\ agricultural\ rice\ field\ background_1132094.jpg')">
+                    <div class="flex flex-col gap-8">
+
+                        <div class="uppercase tracking-wide text-indigo-500 font-semibold mt-2 text-3xl mx-auto">
+                            IRRIGATION
+                        </div>
+                        <a class="block mt-1 text-2xl font-medium text-black hover:text-blue-700 mx-auto" href="#">
+                            MR. AGNIHOTRI JAISWAL </a>
+
+                        <div>This is the start of the content of irrigation. Here,
+                            you will gain major insight on the nuances of irrigation.
+                        </div>
+                        <button id="commentsBtn" class="bg-red-700 text-xl w-40 rounded-lg px-2 py-2 mx-auto  hover:text-white">Comments</button>
+
+
+                    </div>
+                    <!-- square brackets [ ] to apply specific pixel values directly to utility classes. This allows you to override the default spacing scale and use custom pixel values for margin, padding, or any other dimension-related utility class.
+                        p-[2px] applies a padding of 2px to all sides of the element.
+                        px-[14px] applies a horizontal padding of 14px to the element. -->
+                    <!-- <div class="flex gap-28">
+
+                        <p class="mt-6 text-slate-500">DATE</p>
+                        <p class="mt-6 text-slate-500">TIME</p>
+                        <button class="mt-2 bg-red-700 text-white rounded px-2 py-2"><a href="blogs1.html">READ MORE</a></button>
+                    </div> -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Sample comments data in the form of objects
+        const commentsData = [
+            { name: "Souvik Sarkar", comment: "This is a great post!" },
+            { name: "Sakshi Patil", comment: "I really enjoyed reading this." },
+            { name: "Ayush Tiwari", comment: "Informative post, looking forward for more posts." },
+            { name: "Vaishnavi Tiwari", comment: "Knowledgeable post, carry on." }
+            // Add more comments as needed
+        ];
+
+        // Function to create and display the dialog box with comments
+        function showCommentsDialog(comments) {
+            // Create a dialog element
+            const dialog = document.createElement('div');
+            dialog.classList.add('dialog');
+
+            // Add comments to the dialog
+            comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.innerHTML = `<strong>${comment.name}:</strong> ${comment.comment}`;
+                commentElement.style.color = "white";
+                commentElement.style.marginLeft = "500px";
+                commentElement.style.marginTop = "5px";
+                dialog.appendChild(commentElement);
+            });
+
+            // Position the dialog below the comments button
+            const commentsBtn = document.getElementById('commentsBtn');
+            const rect = commentsBtn.getBoundingClientRect();
+            dialog.style.top = (rect.bottom + window.scrollY) + 'px';
+            dialog.style.left = rect.left + 'px';
+
+            // Append the dialog to the body
+            document.body.appendChild(dialog);
+
+            // Close the dialog when clicking outside of it
+            document.addEventListener('click', function (event) {
+                if (!dialog.contains(event.target) && event.target !== commentsBtn) {
+                    dialog.remove();
+                }
+            });
+        }
+
+        // Add event listener to the comments button
+        const commentsBtn = document.getElementById('commentsBtn');
+        commentsBtn.addEventListener('click', function () {
+            // Call the function to display the comments dialog
+            showCommentsDialog(commentsData);
+        });
+    </script>
+</body>
+
+</html>
