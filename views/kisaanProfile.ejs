@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/public/stylesheets/kisaanProfile.css"> 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+</head>
+<body>
+  <div class="main_box">
+    <input type="checkbox" id="check" />
+    <div class="btn_one">
+      <label for="check">
+        <i class="fa-solid fa-bars"></i>
+      </label>
+    </div>
+
+    <div class="sidebar_menu">
+      <div class="logo">
+        <a href="#">Agro Techies</a>
+      </div>
+
+      <div class="btn_two">
+        <label for="check" style="color: grey">
+          <i class="fa-solid fa-xmark"></i>
+        </label>
+      </div>
+
+      <div class="menu">
+        <ul>
+          <li>
+            <a href="#">Dashboard</a>
+          </li>
+          <li>
+            <a href="#">Blogs</a>
+          </li>
+          <li>
+            <a href="#">Exhibits</a>
+          </li>
+          <li>
+            <a href="#">Products</a>
+          </li>
+          <li>
+            <a href="#">Sold crops</a>
+          </li>
+          <li>
+            <a href="#">Order History</a>
+          </li>
+          <li>
+            <a href="#">Market</a>
+          </li>
+          <li>
+            <a href="#">Marketplace</a>
+          </li>
+          <li>
+            <a href="#">Bot</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="page">
+    <div class="left">
+        <div class="box">
+            <div class="edit">
+              <a href="#"><i class="fa-solid fa-pen" id="pen"></i></a>
+            </div>
+            <img src="/images/profile.jpg">
+            <h2>Name</h2>
+            <h6>@username</h6>
+            <h6>Contact: +91 9876543210</h6>
+            <button>Home</button> &nbsp;&nbsp;&nbsp; <button>Logout</button>
+        </div>
+        <div class="cards">
+            <div class="card">
+              <img src="/images/inventory.jpg">
+              <h2>Inventory</h2>
+            </div>
+            <div class="card">
+              <img src="/images/history.jpg">
+              <h2>History</h2>
+            </div>
+            <div class="card">
+              <img src="/images/dash.png">
+              <h2>Dashboard</h2>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="balance"><h2>Balance: 00 Rs</h2></div>
+        <div class="form">
+          <form action="/">
+            <input type="text" class="details" placeholder="Account Number">
+            <input type="text" class="details" placeholder="IFSC Code">
+            <input type="text" class="details" placeholder="Account Holdername">
+            <br>
+            <button type="submit" class="redeem">Redeem</button>
+          </form>
+        </div>
+    </div>
+  </div>
+</body>
+</html>
