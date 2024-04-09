@@ -23,7 +23,8 @@ const blogSchema = new Schema({
     shareableLink:{
         type:String,
         unique:true
-    }
+    },
+    image:String
 
 })
 

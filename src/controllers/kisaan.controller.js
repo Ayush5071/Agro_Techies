@@ -1,4 +1,8 @@
 import express from "express";
+import { Crop } from "../models/crop.model.js";
+import { Kisaan } from "../models/kisaan.model.js";
+import { cropPrice } from "../models/officerCrop.model.js";
+import { Product } from "../models/product.model.js";
 
 
 
@@ -36,5 +40,88 @@ const weatherApi = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+const sellingCrop = async (req, res) => {
+    try {
+        const cropName = req.params.cropName;
+        const {quantity} = req.body;
+        const kisaanId = req.user._id;
+        const cropModel = await Crop.findOne({kisaan:kisaanId});
   
-export {weatherApi}
+        const kisaan = await Kisaan.findById(kisaanId).populate('crops');
+        if (!kisaan) {
+            return res.status(404).send('Kisaan not found');
+        }
+        const crop = await cropPrice.findOne({ cropName: cropName });
+        if (!crop) {
+            return res.status(404).send('Crop not found');
+        }
+  
+        if (kisaan.crops[cropName] < quantity) {
+            return res.status(400).send('Insufficient quantity of crop');
+        }
+        const totalPrice = crop.price * quantity;
+        kisaan.balance += totalPrice;
+        kisaan.crops.set(cropName, kisaan.crops.get(cropName) - quantity);
+        cropModel.set(cropName, cropModel.get(cropName) - quantity);
+        kisaan.soldCrops.push({
+          cropName,
+          quantitySold: quantity,
+          pricePerKg: crop.price,
+          totalPrice
+        });
+        await kisaan.save();
+        await cropModel.save();
+        res.status(200).send('Crop sold successfully');
+    } catch (error) {
+        console.error('Error selling crop:', error);
+        res.status(500).send('Internal Server Error');
+    }
+  }
+const showmarketPlace = async (req,res)=>{
+    const crops = await cropPrice.find();
+    res.render('kisaan_marketPlace',{crops})
+  
+  }
+const allProducts = async (req,res)=>{
+    const products =  await Product.find();
+    res.render('kisaan_market',{products});
+  }
+const Inventory = async (req,res)=>{
+    const username = req.session.passport.user;
+    const crops = await Kisaan.findOne({username}).populate('crops')
+    res.send(crops)
+  }
+  
+const signup =  function(req, res, next) {
+    res.render('kisaan.auth.ejs');
+  }
+const login =  function(req, res, next) {
+    res.render('kisaanLogin');
+  }
+const addCrops = async (req, res) => {
+    try {
+        const username = req.user.username
+        const farmer = await Kisaan.findOne({username});
+        const { rice, wheat, maize } = req.body;
+        const newCrop = new Crop({
+            kisaan:farmer._id,
+            rice: rice || 0,
+            wheat: wheat || 0,
+            maize: maize || 0
+        });
+        await Crop.create(newCrop);
+        farmer.crops = newCrop._id;
+        await farmer.save();
+        await newCrop.save();
+  
+        res.redirect('/kisaan/inventory'); 
+    } catch (error) {
+        console.error('Error adding crops:', error);
+        res.status(500).send('Error adding crops');
+    }
+  }
+const addCropsForm = (req,res)=>{
+    res.render('kisaan_addCrops')
+  }
+  
+export {weatherApi,sellingCrop,showmarketPlace,allProducts,Inventory,signup,login,addCrops,addCropsForm}
