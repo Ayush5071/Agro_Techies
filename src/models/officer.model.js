@@ -26,7 +26,13 @@ const officerSchema = new Schema({
     blogs:[{
         type:Schema.Types.ObjectId,
         ref:"Blog"
-    }]
+    }],
+    contact : {
+        type:Number
+    },
+    profileImage: {
+        type:String
+    }
 },
 {
     timestamps:true

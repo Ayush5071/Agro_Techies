@@ -9,6 +9,9 @@ const cropPriceSchema = new Schema({
     },
     image:{
         type:String
+    },
+    totalSelled:{
+        type:Number
     }
 });
 

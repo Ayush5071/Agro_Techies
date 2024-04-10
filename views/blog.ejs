@@ -1,44 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog Sharing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Sharing</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <form action="/officer/blog" method="post" enctype="multipart/form-data">
-        <input name="heading" placeholder="heading" type="text">
-        <input name="content" placeholder="content" type="text">
-        <input name="elligibility" placeholder="elligibility" type="text">
-        <input name="schemeLink" placeholder="schemeLink" type="text">
-        <input type="file" name="image" id="image">
-        <input type="submit" value="submit">
-    </form>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8 px-4">
+        <h1 class="text-3xl font-bold mb-8 text-center">Blog Sharing</h1>
 
-<button onclick="shareOnWhatsApp()">Share on WhatsApp</button>
-<button onclick="shareOnInstagram()">Share on Instagram</button>
-<form action="/kisaan/image" method="post" enctype="multipart/form-data">
-  <input type="file" name="image" id="image">
-  <input type="submit" value="submit">
-</form>
+        <!-- Blog Form -->
+        <form action="/officer/blog" method="post" enctype="multipart/form-data" class="mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input name="heading" placeholder="Heading" type="text" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
+                <input name="content" placeholder="Content" type="text" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
+                <input name="elligibility" placeholder="Eligibility" type="text" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
+                <input name="schemeLink" placeholder="Scheme Link" type="text" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
+                <input type="file" name="image" id="image" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
+                <input type="submit" value="Submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
+            </div>
+        </form>
 
-<!-- Add more share buttons for other platforms as needed -->
+        <!-- Share Buttons -->
+        <div class="flex justify-center space-x-4 mb-8">
+            <button onclick="shareOnWhatsApp()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:bg-green-700">Share on WhatsApp</button>
+            <button onclick="shareOnInstagram()" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:bg-purple-700">Share on Instagram</button>
+        </div>
 
-<script>
-function shareOnWhatsApp() {
-  const blogTitle = 'test';
-  const shareableLink = ".....";
-  const message = `Check out this blog: ${blogTitle} - ${shareableLink}`;
-  const whatsappURL = `whatsapp://send?text=${encodeURIComponent(message)}`;
-  window.location.href = whatsappURL;
-}
+        <!-- Image Upload Form -->
+        <form action="/kisaan/image" method="post" enctype="multipart/form-data" class="mb-8">
+            <input type="file" name="image" id="image" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
+            <input type="submit" value="Submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 mt-4">
+        </form>
+    </div>
 
-function shareOnInstagram() {
-  // Instagram does not allow direct sharing programmatically
-  // You can encourage users to share manually with pre-filled content
-  alert('Share on Instagram: Copy the link and open Instagram to share manually.');
-}
-</script>
+    <script>
+        function shareOnWhatsApp() {
+            const blogTitle = 'test';
+            const shareableLink = ".....";
+            const message = `Check out this blog: ${blogTitle} - ${shareableLink}`;
+            const whatsappURL = `whatsapp://send?text=${encodeURIComponent(message)}`;
+            window.location.href = whatsappURL;
+        }
 
+        function shareOnInstagram() {
+            // Instagram does not allow direct sharing programmatically
+            // You can encourage users to share manually with pre-filled content
+            alert('Share on Instagram: Copy the link and open Instagram to share manually.');
+        }
+    </script>
 </body>
 </html>

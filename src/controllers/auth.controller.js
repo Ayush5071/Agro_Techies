@@ -87,27 +87,27 @@ const farmerRegistration = async(req,res)=>{
     console.log("isKisaan:", isKisaan);
     console.log("isOfficer:", isOfficer);
     console.log("isSeller:", isSeller);
-    console.log("kissan se start hai --",req.path.startsWith('/kisaan'))
-    console.log("path :",req.path);
+    console.log("path :", req.path);
     const basePath = req.baseUrl;
   
-    if (isAuthenticated && isKisaan && basePath == '/kisaan') {
-      console.log("Authenticated as Kisaan:", req.user);
-      console.log("req.session.passport.user:", req.session.passport.user);
-      return next();
+    if (isAuthenticated && isKisaan ) {
+        console.log("Authenticated as Kisaan:", req.user);
+        console.log("req.session.passport.user:", req.session.passport.user);
+        return next();
     }
-    if (isAuthenticated && isOfficer && basePath == '/officer') {
-      console.log("Authenticated as Officer:", req.user);
-      return next();
+    if (isAuthenticated && isOfficer ) {
+        console.log("Authenticated as Officer:", req.user);
+        return next();
     }
-    if (isAuthenticated && isSeller && basePath == '/seller') {
-      console.log("Authenticated as Seller:", req.user);
-      return next();
+    if (isAuthenticated && isSeller ) {
+        console.log("Authenticated as Seller:", req.user);
+        return next();
     }
   
     console.log("Not authenticated or user type unrecognized");
     res.redirect('/');
-  }
+};
+
   
   const kisaanLogin = async function(req, res, next) {
     passport.authenticate("farmer-local", {

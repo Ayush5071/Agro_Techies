@@ -11,6 +11,10 @@
     />
 </head>
 <body>
+  <form id="uploadform" action="/seller/sellerImage" method="post" enctype="multipart/form-data">
+    <input type="file" name="profileImage">
+    <input type="submit" value="submit">
+  </form>
   <div class="main_box">
     <input type="checkbox" id="check" />
     <div class="btn_one">
@@ -46,32 +50,50 @@
     <div class="left">
         <div class="box">
             <div class="edit">
-              <a href="#"><i class="fa-solid fa-pen" id="pen"></i></a>
+              <a id="uploadicon" href=""><i class="fa-solid fa-pen" id="pen"></i></a>
             </div>
-            <img src="/images/profile.jpg">
-            <h2>Name</h2>
-            <h6>@username</h6>
-            <h6>Comapny Name :</h6>
-            <h6>Sales :</h6>
-            <h6>Email</h6>
-            <h6>Contact: +91 9876543210</h6>
+            <img src="<%= seller.profileImage %>">
+            <h2><%= seller.fullName %></h2>
+            <h6>@<%= seller.username %></h6>
+            <h6>Comapny Name : <%= seller.company%></h6>
+            <h6>Sales : <%= %></h6>
+            <h6>Email : <%= seller.email %></h6>
+            <h6>Contact: <%= seller.contact %></h6>
             <button>Home</button> &nbsp;&nbsp;&nbsp; <button>Logout</button>
         </div>
     </div>
     <div class="right">
             <div class="card" id="product">
-              <img src="/images/product.webp">
+              <img src="/images/product.webp" onclick="product()">
               <h2>Products</h2>
             </div>
-            <div class="card" id="order">
-              <img src="/images/order.png">
+            <div class="card" id="order" >
+              <img src="/images/order.png" onclick="Orders()">
               <h2>Orders</h2>
             </div>
             <div class="card" id="review">
-              <img src="/images/feedback.jpg">
+              <img src="/images/feedback.jpg" onclick="reviews()">
               <h2>Reviews / Complaints</h2>
             </div>
     </div>
   </div>
+  <script>
+    document.querySelector('#uploadicon').addEventListener("click", () => {
+      document.querySelector("#uploadform>input").click();
+    })
+    function product(){
+        window.location.href = `/seller/myroducts`
+    }
+    function Orders(){
+        window.location.href = `/seller/orders`
+    }
+    function reviews(){
+        window.location.href = `/seller/reviews`
+    }
+    
+    // document.querySelector("#uploadform>input").addEventListener("change", () => {
+    //   document.querySelector("#uploadform").submit();
+    // })
+  </script>  
 </body>
 </html>

@@ -1,7 +1,8 @@
+
 <% include ./components/header.ejs %>
 
 
-<body class="bg-gradient-to-r from-[#F28383] from-10% via-[#9D6CD2] via-30% to-[#481EDC] to-90% flex items-center justify-center h-screen">
+<div class="bg-gradient-to-r from-[#F28383] from-10% via-[#9D6CD2] via-30% to-[#481EDC] to-90% flex items-center justify-center h-screen">
     <div class="bg-blue-950 bg-opacity-50 shadow-xl max-w-[960px] grid grid-cols-2 items-center gap-20 p-5 rounded-2xl object-cover">
         <div class="ml-6">
             <img src="/images/kissan.jpg" alt="" class="rounded-xl"/>
@@ -21,7 +22,7 @@
                 </a>
             </div>
             
-                <form action="/officer/login" method="post" class="space-y-6 text-white">
+                <form action="/kisaan/login" method="post" class="space-y-6 text-white">
                     <div class="relative">
                         <div class="absolute top-1 left-1 bg-white-medium rounded-full p-2 flex items-center justify-center text-blue-300">
                             <i class="ri-user-line"></i>
@@ -46,7 +47,10 @@
         </div>
     </div>
     
-</body>
+</div>
+<script>
+    
+</script>
 
 
 <% include ./components/footer.ejs %>
