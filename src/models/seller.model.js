@@ -25,7 +25,10 @@ const sellerSchema = new Schema({
     products:[{
         type: Schema.Types.ObjectId,
         ref:"Product"
-    }]
+    }],
+    profileImage:{
+        type:String
+    }
 },
 {
     timestamps:true

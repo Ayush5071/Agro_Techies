@@ -1,9 +1,8 @@
 import express from "express"
 const router = express.Router()
-import { Officer } from "../models/officer.model.js"
 import { Blog } from "../models/blog.model.js";
 import { isLoggedIn, officerLogin, officerRegistration } from "../controllers/auth.controller.js";
-import { Kisaan } from "../models/kisaan.model.js"
+import { Officer } from "../models/officer.model.js"
 import { Seller } from "../models/seller.model.js";
 import  passport  from "passport";
 import { cropPrice } from '../models/officerCrop.model.js';
@@ -47,8 +46,41 @@ router.delete('/blog/:id', isLoggedIn, async (req, res) => {
     }
 });
 
+
 router.get("/home",isLoggedIn,(req,res)=>{
     res.send("OFFICERS - HOME")
+})
+router.post("/officer-p-image-upload",isLoggedIn,upload.single("profileImage"), async (req, res) => {
+    try {
+        const username = req.user.username;
+        const officer = await Officer.findOne({ username: username });
+        console.log(username,"bhugevcj ghjv yufg g ftv gh yuvgkjh")
+        if (!officer) {
+            return res.status(404).json({ error: "Officer not found" });
+        }
+  
+        const path = req.file.path;
+        console.log(path)
+        const cloudinaryResponse = await uploadOnCloudinary(path);
+  
+        if (!cloudinaryResponse || !cloudinaryResponse.url) {
+            return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
+        }
+  
+        const url = cloudinaryResponse.url;
+        console.log(url)
+        officer.profileImage = url;
+        await officer.save();
+        return res.redirect("/officer/profile");
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+router.get("/profile",isLoggedIn,async (req,res)=>{
+    const officer = await Officer.findOne({username:req.user.username});
+    const totalkisaan = await Officer.countDocuments();
+    res.render("officerProfile",{officer,totalkisaan})
 })
 router.get("/blogt",isLoggedIn,async function(req,res){
     const blogs = Blog.find()

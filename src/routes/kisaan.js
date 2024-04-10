@@ -27,17 +27,36 @@ router.post("/signup",farmerRegistration)
 
 router.post('/login', kisaanLogin)
 
-router.post("/image",isLoggedIn,upload.single("image"),async (req,res)=>{
-  const username = req.session.passport.user
-  console.log(username)//
-  const data = await Kisaan.findOne({username:username})
-  console.log(data) //
-  const imagePath = req.file.path
-  const url = await uploadOnCloudinary(imagePath).url
-  console.log(url)
+router.post("/kisaan-p-image-upload",isLoggedIn,upload.single("image"), async (req, res) => {
+  try {
+      const username = req.user.username;
+      const kisaan = await Kisaan.findOne({ username: username });
+      
+      if (!kisaan) {
+          return res.status(404).json({ error: "Kisaan not found" });
+      }
 
+      const path = req.file.path;
+      const cloudinaryResponse = await uploadOnCloudinary(path);
 
+      if (!cloudinaryResponse || !cloudinaryResponse.url) {
+          return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
+      }
 
+      const url = cloudinaryResponse.url;
+      kisaan.profileImage = url;
+      await kisaan.save();
+
+      return res.redirect("/kisaan/profile");
+  } catch (error) {
+      console.error('Error uploading image:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/profile',isLoggedIn,async(req,res)=>{
+  const kisaan = await Kisaan.findOne({username:req.session.passport.user})
+  res.render('kisaanProfile',{kisaan})
 })
 router.get('/home', isLoggedIn,function(req, res, next) {
   res.render('blog');
