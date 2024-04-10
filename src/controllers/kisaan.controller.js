@@ -45,9 +45,10 @@ const sellingCrop = async (req, res) => {
         const cropName = req.params.cropName;
         const {quantity} = req.body;
         const kisaanId = req.user._id;
-        const cropModel = await Crop.findOne({kisaan:kisaanId});
-  
+        
         const kisaan = await Kisaan.findById(kisaanId).populate('crops');
+        const kisaancrop = kisaan.crops
+        const cropModel = await Crop.findOne({_id:kisaancrop._id});
         if (!kisaan) {
             return res.status(404).send('Kisaan not found');
         }
@@ -86,11 +87,19 @@ const allProducts = async (req,res)=>{
     const products =  await Product.find();
     res.render('kisaan_market',{products});
   }
-const Inventory = async (req,res)=>{
-    const username = req.session.passport.user;
-    const crops = await Kisaan.findOne({username}).populate('crops')
-    res.send(crops)
-  }
+  const Inventory = async (req, res) => {
+    try {
+        const username = req.session.passport.user;
+        const kisaan = await Kisaan.findOne({ username }).populate('crops');
+        console.log("dekhlo yaarc yhi h --------------> ",kisaan.crops)
+        res.render('inventory', { crops: kisaan.crops });
+    } catch (error) {
+        console.error('Error fetching inventory:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
   
 const signup =  function(req, res, next) {
     res.render('kisaan.auth.ejs');
@@ -103,17 +112,16 @@ const addCrops = async (req, res) => {
         const username = req.user.username
         const farmer = await Kisaan.findOne({username});
         const { rice, wheat, maize } = req.body;
-        const newCrop = new Crop({
+        const newCrop = await Crop.create({
             kisaan:farmer._id,
             rice: rice || 0,
             wheat: wheat || 0,
             maize: maize || 0
         });
-        await Crop.create(newCrop);
+        await newCrop.save();
+        console.log(newCrop)
         farmer.crops = newCrop._id;
         await farmer.save();
-        await newCrop.save();
-  
         res.redirect('/kisaan/inventory'); 
     } catch (error) {
         console.error('Error adding crops:', error);
