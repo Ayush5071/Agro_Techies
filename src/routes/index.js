@@ -25,7 +25,6 @@ router.post('/chat', (req, res) => {
   const { message } = req.body;
   console.log(message)
   const answer = handleChatMessage(classifier, message);
-  console.log(answer)
   res.json({ answer });
 });
 

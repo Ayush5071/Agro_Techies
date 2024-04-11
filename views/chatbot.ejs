@@ -4,11 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chatbot Demo</title>
-  <!-- Include Tailwind CSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 h-screen flex flex-col justify-center items-center">
-  <h1 class="text-3xl font-bold mb-8">Chatbot Demo</h1>
+  <h1 class="text-3xl font-bold mb-8">Kisaan's Chatbot</h1>
   <div id="chat-container" class="max-w-md w-full bg-white rounded-lg shadow-lg p-4 mb-8"></div>
   <div class="flex w-full max-w-md">
     <input type="text" id="message-input" class="flex-1 appearance-none rounded-l-lg py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-sm focus:outline-none">
@@ -37,7 +36,7 @@
             }
             const data = await response.json();
             const answer = data.answer;
-            chatContainer.innerHTML += `<div class="mb-2"><strong class="text-blue-500">User:</strong> ${message}</div>`;
+            chatContainer.innerHTML += `<div class="mb-2"><strong class="text-blue-500"><%= kisaan.username %>:</strong> ${message}</div>`;
             chatContainer.innerHTML += `<div class="mb-2"><strong class="text-green-500">Bot:</strong> ${answer}</div>`;
             messageInput.value = '';
           } catch (error) {

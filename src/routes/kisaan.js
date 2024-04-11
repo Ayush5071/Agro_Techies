@@ -71,8 +71,9 @@ router.get('/profile',isLoggedIn,async(req,res)=>{
   res.render('kisaanProfile',{kisaan})
 })
 router.get('/inventory',isLoggedIn,Inventory)
-router.get('/chatbot', async function(req, res, next) {
-  res.render("chatbot");
+router.get('/chatbot',isLoggedIn, async function(req, res, next) {
+  const kisaan = await Kisaan.findOne({username:req.session.passport.user})
+  res.render("chatbot",{kisaan});
 });
 router.get('/market',isLoggedIn,allProducts)
 router.get('/product/:id',isLoggedIn,async (req,res)=>{
