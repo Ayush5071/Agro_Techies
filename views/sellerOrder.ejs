@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/order.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="main">
+        <div id="nav">
+            <div id="logo"><img src="/images/assets/logo.png" alt=""></div>
+            <div id="right">
+                <a href="/sprofile">Profile</a><a href="/logout" id="logout">Logout</a>
+            </div>
+        </div>
+        <div id="page1">
+            <div id="products">
+    <% seller.orders.forEach((e)=>{ %>
+                <div class="sproduct">
+                    <div class="simage">
+                        <img src="<%= e.productImage %>" alt="">
+                    </div>
+                    <div class="sdata">
+                        <h3>Customer : <%= e.username %></h3>
+                            <h3>Product : <%=e.productName %></h3>
+                            <h3> Price : &#8377; <%=e.price %></h3>
+                            <h3>Payment : <%=e.mode %></h3>
+                            <h3>Address : <%= e.address %></h3>
+                            <h3>Contact : <%=e.contact %></h3>
+                            <h3>Status : <%=e.status %></h3>
+
+
+                        <div id="icons">
+                            <!-- <a href="#" class="add-to-cart" data-productid="<%= e._id %>"><i class="ri-shopping-cart-fill"></i> Add to cart</a> -->
+                            <!-- <a href="#" class="remove-from-cart" data-productid="<%= e._id %>"><i class="ri-close-circle-fill"></i> Remove from cart</a> -->
+                            <a href="/product/<%= e.product %>"><i class="ri-arrow-right-circle-line"></i></a>
+                        </div>
+                        <form action="/seller/status/<%= e._id %>" method="post">
+                            <select name="status" id="status">
+                                <option value="ordered">Ordered</option>
+                                <option value="processing">Processing</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>       
+                            </select>
+                            <input type="submit" value="submit">
+                        </form>
+
+
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+
+<script src="/javascripts/cart.js"></script>   
+
+
+</body>
+</html>

@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 const reviewSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: "user"
+        ref: "Kisaan"
       },
     product:String,
     productid:String,

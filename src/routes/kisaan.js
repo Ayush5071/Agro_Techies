@@ -13,6 +13,7 @@ import { cropPrice } from "../models/officerCrop.model.js";
 
 import { orderForm, stripePaymentProcessingGet, stripePaymentProcessingPost, success } from "../controllers/payment.controller.js";
 import { Review } from "../models/review.model.js";
+import { Seller } from "../models/seller.model.js";
 
 
 router.get('/payment/:id',stripePaymentProcessingGet);
@@ -60,20 +61,23 @@ router.post("/kisaan-p-image-upload",isLoggedIn,upload.single("image"), async (r
       return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+router.get('/orders',isLoggedIn,async(req,res)=>{
+  const kisaan = await Kisaan.findOne({username:req.user.username}).populate('orders')
+  console.log("kkkkkkkkkkkkkkiiiiiissssssssssaaaaaaaaaaaaaaaaaaannnnnnnnnnnnnn===========",kisaan)
+  res.render('kisaanOrder',{kisaan})
+})
 router.get('/profile',isLoggedIn,async(req,res)=>{
   const kisaan = await Kisaan.findOne({username:req.session.passport.user})
   res.render('kisaanProfile',{kisaan})
 })
-router.get('/home', isLoggedIn,function(req, res, next) {
-  res.render('blog');
-});
 router.get('/inventory',isLoggedIn,Inventory)
-
+router.get('/chatbot', async function(req, res, next) {
+  res.render("chatbot");
+});
 router.get('/market',isLoggedIn,allProducts)
 router.get('/product/:id',isLoggedIn,async (req,res)=>{
   const product = await Product.findOne({_id:req.params.id}).populate('seller')
-  const review = await Review.find({productid:req.params.id}).populate('kisaan')
+  const review = await Review.find({productid:req.params.id}).populate('user')
   console.log(review)
   res.render('farmer_product_detail',{product,review});
 })
@@ -109,7 +113,7 @@ router.post("/review/:id", isLoggedIn, upload.single("reviewImage"), async (req,
       reviews: req.body.reviews,
       productid: req.params.id,
       product: product.productName,
-      kisaan: kisaan._id
+      user: kisaan._id
     });
 
     await review.save();

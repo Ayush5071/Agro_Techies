@@ -38,7 +38,7 @@ const kisaanSchema = new Schema({
     profileImage:String,
     orders : [{
         type:Schema.Types.ObjectId,
-        ref:"Product"
+        ref:"Order"
     }],
     soldCrops: [soldCropSchema] ,
     balanceHistory:{

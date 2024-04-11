@@ -7,6 +7,7 @@ import { Product } from "../models/product.model.js"
 import { upload } from "../middlewares/multer.middleware.js"
 import { uploadOnCloudinary } from "../middlewares/cloudinary.middleware.js";
 import { addProduct } from "../controllers/seller.controller.js"
+import { Order } from "../models/order.model.js"
 
 router.get("/home",isLoggedIn,(req,res)=>{
     res.send("Sellers - HOME")
@@ -55,6 +56,11 @@ router.post('/updateProduct/:productId', isLoggedIn, async (req, res) => {
     }
 });
 
+router.get('/orders',isLoggedIn,async(req,res)=>{
+    const seller = await Seller.findOne({username:req.user.username}).populate('orders')
+    console.log(seller)
+    res.render('sellerOrder',{seller})
+})
 
 
 router.get('/product/:id',isLoggedIn,async(req,res)=>{
@@ -62,6 +68,12 @@ router.get('/product/:id',isLoggedIn,async(req,res)=>{
     res.render('updateProductForm',{product})
 })
 
+router.post('/status/:orderId',isLoggedIn,async(req,res)=>{
+    const order = await Order.findOne({_id:req.params.orderId})
+    order.status = req.body.status;
+    await order.save();
+    res.redirect('/seller/orders');
+})
 
 
 router.get('/myproducts',isLoggedIn,async(req,res)=>{

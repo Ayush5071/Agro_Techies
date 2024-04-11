@@ -103,21 +103,21 @@ const farmerRegistration = async(req,res)=>{
   
   const kisaanLogin = async function(req, res, next) {
     passport.authenticate("farmer-local", {
-      successRedirect: "/kisaan/home",
+      successRedirect: "/kisaan/profile",
       failureRedirect: "/"
     })(req, res, next);
   };
   
   const officerLogin = async function(req, res, next) {
     passport.authenticate("officer-local", {
-      successRedirect: "/officer/home",
+      successRedirect: "/officer/profile",
       failureRedirect: "/"
     })(req, res, next);
   };
   
   const sellerLogin = async function(req, res, next) {
     passport.authenticate("seller-local", {
-      successRedirect: "/seller/home",
+      successRedirect: "/seller/profile",
       failureRedirect: "/"
     })(req, res, next);
   };
