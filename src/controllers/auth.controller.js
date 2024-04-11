@@ -7,13 +7,15 @@ import passport from "passport";
 
 const farmerRegistration = async(req,res)=>{
     try {
-      const {email,username,state,city} = req.body
+      const {email,username,fullName,city,state,contact} = req.body
       console.log(username)
       const data =  new Kisaan({
         username:username,
         email:email,
         state:state,
         city:city,
+        contact:contact,
+        fullName:fullName
       })
       console.log(data)
       Kisaan.register(data,req.body.password)
@@ -55,12 +57,14 @@ const farmerRegistration = async(req,res)=>{
   };
   const sellerRegistration = async (req, res) => {
     try {
-      const { email, username, fullName } = req.body;
+      const { email, username, fullName,company,contact } = req.body;
       console.log(username);
       const data = new Seller({
         username: username,
         email: email,
         fullName: fullName,
+        company:company,
+        conatct:contact
       });
       console.log(data); 
         Seller.register(data, req.body.password)
