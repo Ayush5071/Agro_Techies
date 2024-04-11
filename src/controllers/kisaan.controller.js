@@ -1,7 +1,7 @@
 import express from "express";
 import { Crop } from "../models/crop.model.js";
 import { Kisaan } from "../models/kisaan.model.js";
-import { cropPrice } from "../models/officerCrop.model.js";
+import {cropPrice} from "../models/officerCrop.model.js";
 import { Product } from "../models/product.model.js";
 
 
@@ -49,6 +49,7 @@ const sellingCrop = async (req, res) => {
         const kisaan = await Kisaan.findById(kisaanId).populate('crops');
         const kisaancrop = kisaan.crops
         const cropModel = await Crop.findOne({_id:kisaancrop._id});
+        const particularCrop = await cropPrice.findOne({cropName:cropName})
         if (!kisaan) {
             return res.status(404).send('Kisaan not found');
         }
@@ -70,6 +71,8 @@ const sellingCrop = async (req, res) => {
           pricePerKg: crop.price,
           totalPrice
         });
+        particularCrop.totalSelled += totalPrice;
+        particularCrop.save();
         await kisaan.save();
         await cropModel.save();
         res.status(200).send('Crop sold successfully');

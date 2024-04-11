@@ -1,9 +1,8 @@
 import express from "express"
 const router = express.Router()
-import { Officer } from "../models/officer.model.js"
 import { Blog } from "../models/blog.model.js";
 import { isLoggedIn, officerLogin, officerRegistration } from "../controllers/auth.controller.js";
-import { Kisaan } from "../models/kisaan.model.js"
+import { Officer } from "../models/officer.model.js"
 import { Seller } from "../models/seller.model.js";
 import  passport  from "passport";
 import { cropPrice } from '../models/officerCrop.model.js';
@@ -11,31 +10,38 @@ import { upload } from "../middlewares/multer.middleware.js";
 import { uploadOnCloudinary} from "../middlewares/cloudinary.middleware.js";
 import { Mongoose } from "mongoose";
 
-router.post("/blog",isLoggedIn,upload.single('image'),async (req,res)=>{
-    const username = req.user.username;
-    console.log(username)
-    const officer = await Officer.findByUsername(username);
-    console.log("data of officer",officer);
-    const filePath = req.file.path;
-    const Cloudinary = await uploadOnCloudinary(filePath);
-    const url = Cloudinary.url
-    console.log(url)
-    const data = await Blog.create({
-        heading:req.body.heading,
-        content:req.body.content,
-        officer:officer.fullName,
-        designation:officer.designation,
-        elligibility:req.body.elligibility,
-        schemeLink:req.body.schemeLink,
-        image: url
-    })
-    await data.save()
-    officer.blogs.push(data._id)
-    officer.save()
+router.post("/blog", isLoggedIn, upload.single('image'), async (req, res) => {
+    try {
+        const username = req.user.username;
+        console.log(username);
+        const officer = await Officer.findByUsername(username);
+        console.log("data of officer", officer);
+        const filePath = req.file.path;
+        const cloudinaryResponse = await uploadOnCloudinary(filePath);
+        if (!cloudinaryResponse || !cloudinaryResponse.url) {
+            throw new Error("Failed to upload image to Cloudinary");
+        }
+        const url = cloudinaryResponse.url;
+        console.log(url);
+        const data = await Blog.create({
+            heading: req.body.heading,
+            content: req.body.content,
+            officer: officer.fullName,
+            designation: officer.designation,
+            elligibility: req.body.elligibility,
+            schemeLink: req.body.schemeLink,
+            image: url
+        });
+        await data.save();
+        officer.blogs.push(data._id);
+        await officer.save();
+        res.json(data);
+    } catch (error) {
+        console.error('Error creating blog:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
-    
-    res.json(data);
-})
 router.delete('/blog/:id', isLoggedIn, async (req, res) => {
     try {
         const blogId = req.params.id;
@@ -47,8 +53,41 @@ router.delete('/blog/:id', isLoggedIn, async (req, res) => {
     }
 });
 
+
 router.get("/home",isLoggedIn,(req,res)=>{
     res.send("OFFICERS - HOME")
+})
+router.post("/officer-p-image-upload",isLoggedIn,upload.single("profileImage"), async (req, res) => {
+    try {
+        const username = req.user.username;
+        const officer = await Officer.findOne({ username: username });
+        console.log(username,"bhugevcj ghjv yufg g ftv gh yuvgkjh")
+        if (!officer) {
+            return res.status(404).json({ error: "Officer not found" });
+        }
+  
+        const path = req.file.path;
+        console.log(path)
+        const cloudinaryResponse = await uploadOnCloudinary(path);
+  
+        if (!cloudinaryResponse || !cloudinaryResponse.url) {
+            return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
+        }
+  
+        const url = cloudinaryResponse.url;
+        console.log(url)
+        officer.profileImage = url;
+        await officer.save();
+        return res.redirect("/officer/profile");
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+router.get("/profile",isLoggedIn,async (req,res)=>{
+    const officer = await Officer.findOne({username:req.user.username});
+    const totalkisaan = await Officer.countDocuments();
+    res.render("officerProfile",{officer,totalkisaan})
 })
 router.get("/blogt",isLoggedIn,async function(req,res){
     const blogs = Blog.find()

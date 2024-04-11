@@ -19,12 +19,22 @@ const sellerSchema = new Schema({
         type:String,
         require:true
     },
+    contact:{
+        type:Number
+    },
     company:{
         type:String,
     },
     products:[{
         type: Schema.Types.ObjectId,
         ref:"Product"
+    }],
+    profileImage:{
+        type:String
+    },
+    orders:[{
+        type:Schema.Types.ObjectId,
+        ref:"Order"
     }]
 },
 {

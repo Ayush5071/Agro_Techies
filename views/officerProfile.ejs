@@ -11,6 +11,9 @@
     />
 </head>
 <body>
+  <form id="uploadform" hidden action="/officer/officer-p-image-upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="profileImage">
+  </form>
   <div class="main_box">
     <input type="checkbox" id="check" />
     <div class="btn_one">
@@ -53,21 +56,21 @@
     <div class="left">
         <div class="box">
             <div class="edit">
-              <a href="#"><i class="fa-solid fa-pen" id="pen"></i></a>
+              <a href="" id="uploadicon"><i class="fa-solid fa-pen" id="pen"></i></a>
             </div>
-            <img src="/images/profile.jpg">
-            <h2>Name</h2>
-            <h6>@username</h6>
-            <h6>Designation :</h6>
-            <h6>Email</h6>
-            <h6>Contact: +91 9876543210</h6>
+            <img src="<%= officer.profileImage %>">
+            <h2>Name : <%= officer.fullName %></h2>
+            <h6>@<%= officer.username %></h6>
+            <h6>Designation : <%= officer.designation %></h6>
+            <h6>Email : <%= officer.email %></h6>
+            <h6>Contact: +91 <%= officer.contact %></h6>
             <button>Home</button> &nbsp;&nbsp;&nbsp; <button>Logout</button>
         </div>
     </div>
     <div class="right">
         <div class="details">
             <div class="info">
-                <h6>Total number of kisaan registered: 7</h6>
+                <h6>Total number of kisaan registered: <%= totalkisaan %></h6>
                 <br>
                 <h6>Total number of crops bought: Price</h6>
             </div>
@@ -101,5 +104,16 @@
         </div>
     </div>
   </div>
+  <script>
+    document.querySelector('#uploadicon').addEventListener("click", () => {
+      document.querySelector("#uploadform>input").click();
+    })
+    document.querySelector("#uploadform>input").addEventListener("change", () => {
+      document.querySelector("#uploadform").submit();
+    })
+    function dashboard(){
+        window.location.href = `/officer/dashboard`
+    }
+  </script>
 </body>
 </html>

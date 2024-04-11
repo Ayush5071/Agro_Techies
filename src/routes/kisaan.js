@@ -12,10 +12,12 @@ import { Crop } from "../models/crop.model.js";
 import { cropPrice } from "../models/officerCrop.model.js";
 
 import { orderForm, stripePaymentProcessingGet, stripePaymentProcessingPost, success } from "../controllers/payment.controller.js";
+import { Review } from "../models/review.model.js";
+import { Seller } from "../models/seller.model.js";
 
 
 router.get('/payment/:id',stripePaymentProcessingGet);
-router.get("/success/:productId",isLoggedIn,success)
+router.get("/success/:sellerId",isLoggedIn,success)
 router.post('/payment/:id', isLoggedIn,stripePaymentProcessingPost)
 
 router.post("/place-order/:id",isLoggedIn,orderForm)
@@ -26,34 +28,103 @@ router.get('/login',login)
 router.post("/signup",farmerRegistration)
 
 router.post('/login', kisaanLogin)
-
-router.post("/image",isLoggedIn,upload.single("image"),async (req,res)=>{
-  const username = req.session.passport.user
-  console.log(username)//
-  const data = await Kisaan.findOne({username:username})
-  console.log(data) //
-  const imagePath = req.file.path
-  const url = await uploadOnCloudinary(imagePath).url
-  console.log(url)
-
-
-
+router.get('/place-order/:Id',isLoggedIn,async(req,res)=>{
+  const productId = req.params.Id;
+  const kisaan = await Kisaan.findOne({username:req.user.username})
+  const product = await Product.findOne({_id:productId})
+  res.render('prePlaceOrderForm',{productId,product,kisaan})
 })
-router.get('/home', isLoggedIn,function(req, res, next) {
-  res.render('blog');
-});
-router.get('/inventory',isLoggedIn,Inventory)
 
+router.post("/kisaan-p-image-upload",isLoggedIn,upload.single("image"), async (req, res) => {
+  try {
+      const username = req.user.username;
+      const kisaan = await Kisaan.findOne({ username: username });
+      
+      if (!kisaan) {
+          return res.status(404).json({ error: "Kisaan not found" });
+      }
+
+      const path = req.file.path;
+      const cloudinaryResponse = await uploadOnCloudinary(path);
+
+      if (!cloudinaryResponse || !cloudinaryResponse.url) {
+          return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
+      }
+
+      const url = cloudinaryResponse.url;
+      kisaan.profileImage = url;
+      await kisaan.save();
+
+      return res.redirect("/kisaan/profile");
+  } catch (error) {
+      console.error('Error uploading image:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+router.get('/orders',isLoggedIn,async(req,res)=>{
+  const kisaan = await Kisaan.findOne({username:req.user.username}).populate('orders')
+  console.log("kkkkkkkkkkkkkkiiiiiissssssssssaaaaaaaaaaaaaaaaaaannnnnnnnnnnnnn===========",kisaan)
+  res.render('kisaanOrder',{kisaan})
+})
+router.get('/profile',isLoggedIn,async(req,res)=>{
+  const kisaan = await Kisaan.findOne({username:req.session.passport.user})
+  res.render('kisaanProfile',{kisaan})
+})
+router.get('/inventory',isLoggedIn,Inventory)
+router.get('/chatbot',isLoggedIn, async function(req, res, next) {
+  const kisaan = await Kisaan.findOne({username:req.session.passport.user})
+  res.render("chatbot",{kisaan});
+});
 router.get('/market',isLoggedIn,allProducts)
 router.get('/product/:id',isLoggedIn,async (req,res)=>{
-  const product = await Product.findOne({_id:req.params.id})
-  res.render('farmer_product_detail',{product});
+  const product = await Product.findOne({_id:req.params.id}).populate('seller')
+  const review = await Review.find({productid:req.params.id}).populate('user')
+  console.log(review)
+  res.render('farmer_product_detail',{product,review});
 })
 router.post('/buy/:id',isLoggedIn,async (req,res)=>{
   const id = req.params.id
   const products =  await Product.findOne({_id:id});
   res.send(products);
 })
+router.post("/review/:id", isLoggedIn, upload.single("reviewImage"), async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    if (!req.file) {
+      return res.status(400).send("No image uploaded");
+    }
+
+    const path = req.file.path;
+    const cloud = await uploadOnCloudinary(path);
+    if (!cloud || !cloud.url) {
+      return res.status(500).send("Error uploading image to Cloudinary");
+    }
+
+    const kisaan = await Kisaan.findByUsername(req.session.passport.user);
+    if (!kisaan) {
+      return res.status(404).send("User not found");
+    }
+
+    const review = await Review.create({
+      reviewImage: cloud.url,
+      reviews: req.body.reviews,
+      productid: req.params.id,
+      product: product.productName,
+      user: kisaan._id
+    });
+
+    await review.save();
+    res.redirect(`/kisaan/product/${product._id}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});
+
 
 
 

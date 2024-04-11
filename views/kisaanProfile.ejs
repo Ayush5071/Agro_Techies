@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="/public/stylesheets/kisaanProfile.css"> 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+  <link rel="stylesheet" href="/stylesheets/kisaanProfile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+
 <body>
+  <form id="uploadform" hidden action="/kisaan/kisaan-p-image-upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="image">
+  </form>
   <div class="main_box">
     <input type="checkbox" id="check" />
     <div class="btn_one">
@@ -33,31 +35,28 @@
       <div class="menu">
         <ul>
           <li>
-            <a href="#">Dashboard</a>
+            <a href="/kisaan/dashboard">Dashboard</a>
           </li>
           <li>
-            <a href="#">Blogs</a>
+            <a href="/kisaan/blog">Blogs</a>
           </li>
           <li>
-            <a href="#">Exhibits</a>
+            <a href="/kisaan/market">Products</a>
           </li>
           <li>
-            <a href="#">Products</a>
+            <a href="">Sold crops</a>
           </li>
           <li>
-            <a href="#">Sold crops</a>
+            <a href="/kisaan/orders">Order History</a>
           </li>
           <li>
-            <a href="#">Order History</a>
+            <a href="/kisaan/marketPlace">Market</a>
           </li>
           <li>
-            <a href="#">Market</a>
+            <a href="/kisaan/chatbot">Bot</a>
           </li>
           <li>
-            <a href="#">Marketplace</a>
-          </li>
-          <li>
-            <a href="#">Bot</a>
+            <a href="/kisaan/addcrops">Add Crops</a>
           </li>
         </ul>
       </div>
@@ -65,43 +64,69 @@
   </div>
   <div class="page">
     <div class="left">
-        <div class="box">
-            <div class="edit">
-              <a href="#"><i class="fa-solid fa-pen" id="pen"></i></a>
-            </div>
-            <img src="/images/profile.jpg">
-            <h2>Name</h2>
-            <h6>@username</h6>
-            <h6>Contact: +91 9876543210</h6>
-            <button>Home</button> &nbsp;&nbsp;&nbsp; <button>Logout</button>
+      <div class="box">
+        <div class="edit">
+          <a id="uploadicon" href="#"><i class="fa-solid fa-pen" id="pen"></i></a>
         </div>
-        <div class="cards">
-            <div class="card">
-              <img src="/images/inventory.jpg">
-              <h2>Inventory</h2>
-            </div>
-            <div class="card">
-              <img src="/images/history.jpg">
-              <h2>History</h2>
-            </div>
-            <div class="card">
-              <img src="/images/dash.png">
-              <h2>Dashboard</h2>
-            </div>
+        <img src="<%= kisaan.profileImage %>">
+        <h2>
+          <%= kisaan.fullName %>
+        </h2>
+        <h6>@<%= kisaan.username %>
+        </h6>
+        <h6>Contact: <%= kisaan.contact %>
+        </h6>
+        <button>Home</button> &nbsp;&nbsp;&nbsp; <button>Logout</button>
+      </div>
+      <div class="cards">
+        <div class="card inventory">
+          <img src="/images/inventory.jpg" onclick="inventory()">
+          <h2>Inventory</h2>
         </div>
+        <div class="card history">
+          <img src="/images/history.jpg" onclick="history()">
+          <h2>History</h2>
+        </div>
+        <div class="card dashboard">
+          <img src="/images/dash.png" onclick="dashboard()">
+          <h2>Dashboard</h2>
+        </div>
+      </div>
     </div>
     <div class="right">
-        <div class="balance"><h2>Balance: 00 Rs</h2></div>
-        <div class="form">
-          <form action="/">
-            <input type="text" class="details" placeholder="Account Number">
-            <input type="text" class="details" placeholder="IFSC Code">
-            <input type="text" class="details" placeholder="Account Holdername">
-            <br>
-            <button type="submit" class="redeem">Redeem</button>
-          </form>
-        </div>
+      <div class="balance">
+        <h2>Balance: &#x20b9 <%= kisaan.balance %>
+        </h2>
+      </div>
+      <div class="form">
+        <form action="/kisaan/redeem" method="post">
+          <input type="text" class="details" placeholder="Account Number">
+          <input type="text" class="details" placeholder="IFSC Code">
+          <input type="text" class="details" placeholder="Account Holdername">
+          <br>
+          <button type="submit" class="redeem">Redeem</button>
+        </form>
+      </div>
     </div>
   </div>
+  <script>
+    document.querySelector('#uploadicon').addEventListener("click", () => {
+      document.querySelector("#uploadform>input").click();
+    })
+    document.querySelector("#uploadform>input").addEventListener("change", () => {
+      document.querySelector("#uploadform").submit();
+    })
+    function inventory(){
+        window.location.href = `/kisaan/inventory`
+    }
+    function history(){
+        window.location.href = `/kisaan/history`
+    }
+    function dashboard(){
+        window.location.href = `/kisaan/dashboard`
+    }
+  </script>
+
 </body>
+
 </html>
