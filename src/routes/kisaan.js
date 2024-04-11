@@ -15,7 +15,6 @@ import { orderForm, stripePaymentProcessingGet, stripePaymentProcessingPost, suc
 import { Review } from "../models/review.model.js";
 import { Seller } from "../models/seller.model.js";
 
-
 router.get('/payment/:id',stripePaymentProcessingGet);
 router.get("/success/:sellerId",isLoggedIn,success)
 router.post('/payment/:id', isLoggedIn,stripePaymentProcessingPost)
@@ -128,14 +127,10 @@ router.post("/review/:id", isLoggedIn, upload.single("reviewImage"), async (req,
 
 
 
-router.get('/marketPlace',isLoggedIn,showmarketPlace)
-router.post('/marketPlace/:cropName',isLoggedIn,sellingCrop)
-router.post('/addCrops', isLoggedIn, addCrops)
-
-router.get('/addCrops',isLoggedIn,addCropsForm)
-
-
-  
+router.get('/marketPlace',isLoggedIn,showmarketPlace);
+router.post('/marketPlace/:cropName',isLoggedIn,sellingCrop);
+router.post('/addCrops', isLoggedIn, addCrops);
+router.get('/addCrops',isLoggedIn,addCropsForm);
 
 router.get("/blog",isLoggedIn,async (req,res)=>{
   const blogs = await Blog.find()

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -71,4 +71,104 @@
   
 
 </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/product.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
+</head>
+<body>
+    <div id="main">
+        <div id="nav">
+
+        </div>
+        <div id="page1">
+            <div id="search">
+                <form action="">
+                    <input type="search" name="filter" id="filter" placeholder="Search items here">
+                    <label for="filter-type" >Filter by:</label>
+                    <select id="filter-type">
+                        <option value="title">Title</option>
+                        <option value="price">Price</option>
+                        <option value="brand">Brand</option>
+                    </select>
+                    <button id="voicebtn" type="button"><i class="ri-mic-line"></i></button>
+                </form>
+            </div>
+            <div id="products">
+                <% products.forEach((e) => { %>
+                    <div class="product">
+                        <div class="image">
+                            <img src="<%= e.productImage %>" alt="">
+                        </div>
+                        <div class="data">
+                            <div id="upper">
+                                <h2 class="title"><%= e.productName %></h2>
+                                <h3 class="price">&#8377; <%= e.price %></h3>
+                            </div>
+                            <div class="brand">
+                                <h3><%= e.company %></h3>
+                            </div>
+                            <div id="icons">
+                                <a href="#" class="add-to-cart" data-productid="<%= e._id %>">
+                                    <i class="ri-shopping-cart-fill"></i> Add to cart
+                                </a>
+                                <a href="#" class="remove-from-cart" data-productid="<%= e._id %>">
+                                    <i class="ri-close-circle-fill"></i> Remove from cart
+                                </a>
+                            </div>
+                            <div class="seemore">
+                                <a href="/kisaan/product/<%= e._id %>">
+                                    <i class="ri-arrow-right-circle-line"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascripts/product.js"></script>
+    <script>
+        const voiceSearchButton = document.getElementById('voicebtn');
+        const searchInput = document.getElementById('filter');
+    
+        if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+    
+            recognition.onresult = function(event) {
+                console.log(event)
+                let transcript = '';
+                for (let i = 0; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+
+                }
+                transcript = transcript.slice(0, -1);
+                searchInput.value = transcript; 
+            };
+    
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+            };
+    
+            voiceSearchButton.addEventListener('click', function() {
+                recognition.start();
+            });
+        } else {
+            console.error('Speech recognition not supported in this browser.');
+        }
+    </script>
+    
+</body>
 </html>
+

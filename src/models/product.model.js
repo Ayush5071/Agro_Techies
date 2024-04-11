@@ -22,6 +22,10 @@ const productSchema = new Schema({
     },
     productImage:{
         type:String,
+    },
+    comapany:{
+        type:String,
+        default:"Agro Techies"
     }
 
 })
