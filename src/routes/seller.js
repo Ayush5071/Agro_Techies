@@ -18,17 +18,60 @@ router.get("/login",(req,res)=>{
     res.render("sellerLogin")
 })
 router.post('/addproduct', isLoggedIn, upload.single('productImage'),addProduct)
+router.delete('/product/:productId', isLoggedIn, async (req, res) => {
+    try {
+        const deletedProduct = await Product.findByIdAndDelete(req.params.productId);
+        if (!deletedProduct) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.status(204).end();
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+router.post('/updateProduct/:productId', isLoggedIn, async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        console.log(productId);
+        const { description, productName, features, price } = req.body; // Corrected variable name to productName
+        console.log("productName:", productName); // Logging productName for debugging
+        const updates = {};
+        if (description) updates.description = description;
+        if (productName) updates.productName = productName;
+        if (features) updates.features = features;
+        if (price) updates.price = price;
+        const updatedProduct = await Product.findByIdAndUpdate(productId, updates, { new: true });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        console.log('Updated Product:', updatedProduct); 
+        res.redirect(`/seller/myproducts`);
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+
+router.get('/product/:id',isLoggedIn,async(req,res)=>{
+    const product = await Product.findOne({_id:req.params.id})
+    res.render('updateProductForm',{product})
+})
+
 
 
 router.get('/myproducts',isLoggedIn,async(req,res)=>{
-    const username = req.user.username
-    console.log(username)
+    const username = req.user.username;
+    console.log(username);
     const seller = await Seller.findOne({username}).populate('products');
-    res.send(seller)
+    res.render('myproducts',{seller});
 })
 router.get('/addproduct',isLoggedIn,async(req,res)=>{
-    console.log(req.user.username)
-    console.log(req.session.passport.user)
+
     res.render('seller_addproduct')
 })
 router.post('/login',sellerLogin)

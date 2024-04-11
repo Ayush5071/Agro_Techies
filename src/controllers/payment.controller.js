@@ -1,32 +1,35 @@
+import { Kisaan } from "../models/kisaan.model.js";
 import { Product } from "../models/product.model.js";
 
 import stripe from 'stripe';
+import { Seller } from "../models/seller.model.js";
+import { Order } from "../models/order.model.js";
 const Publishable_Key = 'pk_test_51OvdslSHOgBCTCQbl5vdNaMmn5d9Bof749HE2Qf4F1n3NIofGESlZZEc5YQAT7pvwWA3zMpXiOj8rZBPnbaXOhx800k7g0ELra';
 
 const stripeInstance = stripe('sk_test_51OvdslSHOgBCTCQbLwtAmCvS8havkRqnEVIlh5gWRLkjnXZxBbY13EVtHh3XRqeOdIp6cSBhoxxXL5gJORBoSsmq00Zgz9i15S');
 const orderForm =  async (req, res) => {
     const product = await Product.findById(req.params.id);
-    const user = await userModel.findByUsername(req.session.passport.user)
-    const seller = await sellerModel.findOne({ products: product._id })
+    const kisaan = await Kisaan.findByUsername(req.session.passport.user)
+    const seller = await Seller.findOne({ products: product._id })
   
-    const order = await orderModel.create({
+    const order = await Order.create({
         product: product._id,
-        user: user._id,
+        user: kisaan._id,
         productname: product.title,
         address: req.body.address,
-        username: user.username,
+        username: kisaan.username,
         price: product.price,
-        mode: req.body.mode,
-        contact: req.body.contact,
+        contact: kisaan.contact,
         productImage: product.productImage,
         status: "ordered"
     })
+    console.log("orderrrrrrrrrrrrr--",order)
     await order.save(),
-    user.orders.push(order._id);
-    await user.save()
-    seller.sales.push(order._id)
+    kisaan.orders.push(order._id);
+    await kisaan.save()
+    seller.orders.push(order._id)
     await seller.save()
-    res.redirect(`/payment/${product._id}`)
+    res.redirect(`/kisaan/payment/${product._id}`)
   }
 const stripePaymentProcessingPost =  async (req, res) => {
     try {
@@ -71,8 +74,10 @@ const stripePaymentProcessingPost =  async (req, res) => {
         res.status(500).send("Payment Error: " + error.message);
     }
   }
-const success = (req,res)=>{
-
+const success = async (req,res)=>{
+    const sellerId = req.params.productId;
+    const seller = await Seller.findOne({_id:sellerId})
+    
     res.render('success');
   }
 const stripePaymentProcessingGet = async (req, res) => {

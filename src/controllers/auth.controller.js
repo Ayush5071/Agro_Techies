@@ -28,13 +28,14 @@ const farmerRegistration = async(req,res)=>{
   }
   const officerRegistration = async (req, res) => {
     try {
-      const { email, username, designation, fullName } = req.body;
+      const { email, username, designation, fullName,contact } = req.body;
       console.log(username);
       const data = new Officer({
         username: username,
         email: email,
         designation: designation,
         fullName: fullName,
+        contact:contact
       });
       console.log(data); // Log data before calling register function
         Officer.register(data, req.body.password)
@@ -82,25 +83,16 @@ const farmerRegistration = async(req,res)=>{
     const isKisaan = req.user instanceof Kisaan;
     const isOfficer = req.user instanceof Officer;
     const isSeller = req.user instanceof Seller;
-  
-    console.log("isAuthenticated:", isAuthenticated);
-    console.log("isKisaan:", isKisaan);
-    console.log("isOfficer:", isOfficer);
-    console.log("isSeller:", isSeller);
-    console.log("path :", req.path);
-    const basePath = req.baseUrl;
+
   
     if (isAuthenticated && isKisaan ) {
-        console.log("Authenticated as Kisaan:", req.user);
-        console.log("req.session.passport.user:", req.session.passport.user);
         return next();
     }
     if (isAuthenticated && isOfficer ) {
-        console.log("Authenticated as Officer:", req.user);
+
         return next();
     }
     if (isAuthenticated && isSeller ) {
-        console.log("Authenticated as Seller:", req.user);
         return next();
     }
   

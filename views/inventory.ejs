@@ -7,15 +7,25 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-8">
-    <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div class="max-w-xl mx-auto">
         <h1 class="text-2xl font-bold mb-4">Inventory</h1>
 
         <% if (crops) { %>
-            <ul class="list-disc list-inside">
-                <li><strong>Wheat:</strong> <%= crops.wheat %> kg</li>
-                <li><strong>Rice:</strong> <%= crops.rice %> kg</li>
-                <li><strong>Maize:</strong> <%= crops.maize %> kg</li>
-            </ul>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-lg font-semibold mb-2">Wheat</h2>
+                    <p><strong>Quantity:</strong> <%= crops.wheat %> kg</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-lg font-semibold mb-2">Rice</h2>
+                    <p><strong>Quantity:</strong> <%= crops.rice %> kg</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-lg font-semibold mb-2">Maize</h2>
+                    <p><strong>Quantity:</strong> <%= crops.maize %> kg</p>
+                </div>
+            </div>
         <% } else { %>
             <p>No crops available in inventory</p>
         <% } %>

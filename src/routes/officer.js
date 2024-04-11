@@ -10,31 +10,38 @@ import { upload } from "../middlewares/multer.middleware.js";
 import { uploadOnCloudinary} from "../middlewares/cloudinary.middleware.js";
 import { Mongoose } from "mongoose";
 
-router.post("/blog",isLoggedIn,upload.single('image'),async (req,res)=>{
-    const username = req.user.username;
-    console.log(username)
-    const officer = await Officer.findByUsername(username);
-    console.log("data of officer",officer);
-    const filePath = req.file.path;
-    const Cloudinary = await uploadOnCloudinary(filePath);
-    const url = Cloudinary.url
-    console.log(url)
-    const data = await Blog.create({
-        heading:req.body.heading,
-        content:req.body.content,
-        officer:officer.fullName,
-        designation:officer.designation,
-        elligibility:req.body.elligibility,
-        schemeLink:req.body.schemeLink,
-        image: url
-    })
-    await data.save()
-    officer.blogs.push(data._id)
-    officer.save()
+router.post("/blog", isLoggedIn, upload.single('image'), async (req, res) => {
+    try {
+        const username = req.user.username;
+        console.log(username);
+        const officer = await Officer.findByUsername(username);
+        console.log("data of officer", officer);
+        const filePath = req.file.path;
+        const cloudinaryResponse = await uploadOnCloudinary(filePath);
+        if (!cloudinaryResponse || !cloudinaryResponse.url) {
+            throw new Error("Failed to upload image to Cloudinary");
+        }
+        const url = cloudinaryResponse.url;
+        console.log(url);
+        const data = await Blog.create({
+            heading: req.body.heading,
+            content: req.body.content,
+            officer: officer.fullName,
+            designation: officer.designation,
+            elligibility: req.body.elligibility,
+            schemeLink: req.body.schemeLink,
+            image: url
+        });
+        await data.save();
+        officer.blogs.push(data._id);
+        await officer.save();
+        res.json(data);
+    } catch (error) {
+        console.error('Error creating blog:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
-    
-    res.json(data);
-})
 router.delete('/blog/:id', isLoggedIn, async (req, res) => {
     try {
         const blogId = req.params.id;

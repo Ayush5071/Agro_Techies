@@ -19,6 +19,9 @@ const sellerSchema = new Schema({
         type:String,
         require:true
     },
+    contact:{
+        type:Number
+    },
     company:{
         type:String,
     },
@@ -28,7 +31,11 @@ const sellerSchema = new Schema({
     }],
     profileImage:{
         type:String
-    }
+    },
+    orders:[{
+        type:Schema.Types.ObjectId,
+        ref:"Order"
+    }]
 },
 {
     timestamps:true

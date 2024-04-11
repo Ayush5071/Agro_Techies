@@ -36,10 +36,10 @@ const kisaanSchema = new Schema({
     country:String,
     landArea:Number,
     profileImage:String,
-    orders : {
+    orders : [{
         type:Schema.Types.ObjectId,
         ref:"Product"
-    },
+    }],
     soldCrops: [soldCropSchema] ,
     balanceHistory:{
         type:Array,
