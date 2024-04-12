@@ -24,8 +24,14 @@ const blogSchema = new Schema({
         type:String,
         unique:true
     },
-    image:String
-
+    image:String,
+    createdAt:{
+        type:Date,
+        default:Date.now()
+    }
+},
+{
+    timestamps:true
 })
 
 blogSchema.pre('save',function(next){

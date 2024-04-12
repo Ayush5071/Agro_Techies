@@ -133,25 +133,29 @@ router.post('/addCrops', isLoggedIn, addCrops);
 router.get('/addCrops',isLoggedIn,addCropsForm);
 
 router.get("/blog",isLoggedIn,async (req,res)=>{
-  const blogs = await Blog.find()
-  res.render('kisaanBlog',{blogs})
+  const blogs = await Blog.find();
+  console.log(blogs);
+  res.render('blog',{blogs})
 })
 
 router.get('/blogs/:id',isLoggedIn,async(req,res)=>{
   const blog = await Blog.findOne({_id:req.params.id})
-  res.render('kisaan_blog_detail',{blog})
+  res.render('kisaanIndividualBlog',{blog})
 })
 router.get("/market",isLoggedIn,async (req,res)=>{
   const product = await Product.find();
   res.send(product)
 })
 router.get('/weather', weatherApi)
+router.get('/weether',isLoggedIn,(req,res)=>{
+  res.render('weather')
+})
 
 router.get('/dashboard',isLoggedIn,async(req,res)=>{
   const username = req.user.username
   const kisaan = await Kisaan.findOne({username});
   // const balanceHistory = await kisaan.select('balanceHistory').exec();
-  res.render('kisaan_dashboard',{kisaan})
+  res.render('kisaanDashboard',{kisaan})
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //for dashboard .....
@@ -201,8 +205,17 @@ router.get('/balance-chart', async (req, res) => {
       res.status(500).send('Internal Server Error');
   }
 });
+router.get('/soldcrops',isLoggedIn,async(req,res)=>{
+  const username = req.user.username
+  const kisaan = await Kisaan.findOne({username}); 
+  res.json(kisaan.soldCrops);
+})
 
-
+router.get('/shareProduct/:productId',async(req,res)=>{
+  const productId = req.params.productId
+  const product = await Product.findOne({_id:productId})
+  res.render("shareProduct",{product})
+})
 // Route to fetch crop quantity data
 router.get('/crop-quantity', async (req, res) => {
   try {

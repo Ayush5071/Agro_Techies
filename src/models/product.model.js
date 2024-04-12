@@ -31,7 +31,7 @@ const productSchema = new Schema({
 })
 
 productSchema.pre('save',function(next){
-    this.shareableLink = `http://localhost:8000/kisaan/product/${this._id}`
+    this.shareableLink = `http://localhost:8000/kisaan/shareProduct/${this._id}`
     next()
 })
 

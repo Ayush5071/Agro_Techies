@@ -43,7 +43,7 @@
     </footer>
 
     <script>
-        // Function to display flash message
+
         function showFlashMessage(message, isSuccess) {
             const flashMessage = document.getElementById('flashMessage');
             flashMessage.textContent = message;
@@ -55,30 +55,28 @@
             }, 4000);
         }
 
-        // Function to handle form submission asynchronously
         async function handleDelete(blogId, cardElement) {
             try {
                 const response = await fetch(`/users/blog/${blogId}`, {
                     method: 'DELETE'
                 });
                 if (response.ok) {
-                    // Remove the deleted blog card from the DOM
+                   
                     cardElement.remove();
-                    // Show success flash message
+
                     showFlashMessage('Blog post deleted successfully', true);
                 } else {
                     console.error('Error deleting blog post:', response.statusText);
-                    // Show error flash message
                     showFlashMessage('Failed to delete blog post', false);
                 }
             } catch (error) {
                 console.error('Error deleting blog post:', error);
-                // Show error flash message
+               
                 showFlashMessage('Failed to delete blog post', false);
             }
         }
 
-        // Attach event listeners to delete buttons
+        
         document.addEventListener('click', async (event) => {
             if (event.target.classList.contains('deleteBtn')) {
                 const blogId = event.target.dataset.blogId;

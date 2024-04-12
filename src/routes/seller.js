@@ -83,7 +83,6 @@ router.get('/myproducts',isLoggedIn,async(req,res)=>{
     res.render('myproducts',{seller});
 })
 router.get('/addproduct',isLoggedIn,async(req,res)=>{
-
     res.render('seller_addproduct')
 })
 router.post('/login',sellerLogin)

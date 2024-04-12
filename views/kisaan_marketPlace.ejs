@@ -34,8 +34,7 @@
             const quantity = quantityInput.value;
 
             try {
-                const response = await axios.post(`/kisaan/marketPlace/${cropName}`, {quantity: quantity});
-                
+                const response = await axios.post(`/kisaan/marketPlace/${cropName}`, {quantity: quantity});            
                 alert('Crop sold successfully');
             } catch (error) {
                 console.error('Error selling crop:', error);

@@ -11,7 +11,8 @@ const cropPriceSchema = new Schema({
         type:String
     },
     totalSelled:{
-        type:Number
+        type:Number,
+        default:0
     }
 });
 
