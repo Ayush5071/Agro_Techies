@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-8">Inventory</h1>
+        
+        <!-- Filter Section -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <label for="search" class="block text-sm font-medium text-gray-700">Search</label>
+                <input type="text" id="search" name="search" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                <select id="category" name="category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option>All</option>
+                    <option>Category 1</option>
+                    <option>Category 2</option>
+                    <option>Category 3</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Inventory List -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Sample Inventory Item -->
+            <div class="bg-white overflow-hidden shadow-md rounded-lg">
+                <img src="https://via.placeholder.com/150" alt="Placeholder Image" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">Potato</h2>
+                    <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-gray-900 font-bold">$29.99</span>
+                        <button class="bg-indigo-500 text-white py-1 px-3 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Sample Inventory Item -->
+            <!-- Repeat the above structure for more inventory items -->
+        </div>
+    </div>
+</body>
+</html>
