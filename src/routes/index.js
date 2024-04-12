@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "../db/index.js";
 import { handleChatMessage, trainClassifier } from "../controllers/chatbot.controller.js";
+import { logout } from "../controllers/auth.controller.js";
 const router = express.Router();
 const classifier = trainClassifier();
 
@@ -29,11 +30,7 @@ router.post('/chat', (req, res) => {
 });
 
 
-
-router.get('/lol',(req,res)=>{
-  res.render('lol')
-})
-
+router.get('/logout',logout)
 
 
 

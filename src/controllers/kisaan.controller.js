@@ -43,23 +43,20 @@ const weatherApi = async (req, res) => {
   const sellingCrop = async (req, res) => {
     try {
         const cropName = req.params.cropName;
+        console.log(cropName)
         const { quantity } = req.body;
+        console.log(quantity)
         const kisaanId = req.user._id;
-        
-        const kisaan = await Kisaan.findById(kisaanId);
-        if (!kisaan) {
-            return res.status(404).send('Kisaan not found');
-        }
+        const kisaan = await Kisaan.findOne({ _id: kisaanId });
+        console.log("yeeeeeeeeeee")
 
         const particularCrop = await cropPrice.findOne({ cropName: cropName });
         if (!particularCrop) {
             return res.status(404).send('Crop not found');
         }
-
         if (kisaan.crops[cropName] < quantity) {
             return res.status(400).send('Insufficient quantity of crop');
         }
-
         const totalPrice = particularCrop.price * quantity;
         kisaan.balance += totalPrice;
         kisaan.crops.set(cropName, kisaan.crops.get(cropName) - quantity);
@@ -70,7 +67,6 @@ const weatherApi = async (req, res) => {
             pricePerKg: particularCrop.price,
             totalPrice
         });
-
         await kisaan.save();
         await particularCrop.save();
 
@@ -79,7 +75,8 @@ const weatherApi = async (req, res) => {
         console.error('Error selling crop:', error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
+
 
 const showmarketPlace = async (req,res)=>{
     const crops = await cropPrice.find();
