@@ -79,7 +79,7 @@
         </h6>
         <h6>State: <%= kisaan.state %>
         </h6>
-        <button>Home</button> &nbsp;&nbsp;&nbsp; <button>Logout</button>
+        <button>Home</button> &nbsp;&nbsp;&nbsp; <button onclick="logout()">Logout</button>
       </div>
       <div class="cards">
         <div class="card inventory">
@@ -127,6 +127,9 @@
     }
     function dashboard(){
         window.location.href = `/kisaan/dashboard`
+    }
+    function logout(){
+      window.location.href = `/kisaan/logout`
     }
   </script>
 
