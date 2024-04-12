@@ -30,6 +30,12 @@ router.post('/chat', (req, res) => {
 
 
 
+router.get('/lol',(req,res)=>{
+  res.render('lol')
+})
+
+
+
 
 
 

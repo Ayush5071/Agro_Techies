@@ -75,10 +75,10 @@ const stripePaymentProcessingPost =  async (req, res) => {
     }
   }
 const success = async (req,res)=>{
-    const sellerId = req.params.productId;
-    const seller = await Seller.findOne({_id:sellerId})
-    
-    res.render('success');
+    const productId = req.params.productId;
+    const product = await Seller.findOne({_id:productId})
+    const kisaan= await Kisaan.findOne({username:req.user.username})
+    res.render('success',{kisaan,product});
   }
 const stripePaymentProcessingGet = async (req, res) => {
     try {
