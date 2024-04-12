@@ -31,27 +31,26 @@
         <span onclick="closePopup()" class="float-right cursor-pointer">&times;</span>
         <p>Crop deleted successfully</p>
     </div>
+    <div id="upopup" class="fixed top-0 right-0 m-4 p-4 bg-gray-700 text-white rounded-lg shadow-md hidden">
+        <span onclick="closePopup()" class="float-right cursor-pointer">&times;</span>
+        <p>Crop Updated successfully </p>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-        // Function to update the price of a crop
         async function updatePrice(cropId) {
             const newPriceInput = document.getElementById(`newPrice_${cropId}`);
             const newPrice = newPriceInput.value;
 
             try {
-                // Make a PUT request to update the crop price
                 const response = await axios.put(`/officer/marketPlace/${cropId}`, { price: newPrice });
 
-                // Update the displayed price on success
                 const priceElement = document.getElementById(`price_${cropId}`);
                 priceElement.textContent = newPrice;
-                
-                // Clear the input field
+                showupdate()
+
                 newPriceInput.value = '';
 
-                // Optionally, show a success message
-                showAlert();
             } catch (error) {
                 console.error('Error updating price:', error);
                 alert('Error updating price. Please try again later.');
@@ -64,24 +63,26 @@
                     method: 'DELETE'
                 });
                 if (response.ok) {
-                    // Crop successfully deleted, update UI accordingly
                     console.log('Crop deleted successfully');
                     showAlert();
-                    // Update UI to remove the deleted crop from the list
                 } else {
-                    // Error deleting crop, handle error
                     const errorMessage = await response.text();
                     console.error('Error deleting crop:', errorMessage);
-                    // Display error message to the user
                 }
             } catch (error) {
                 console.error('Error deleting crop:', error);
-                // Display error message to the user
             }
         }
 
         function showAlert() {
             const popup = document.getElementById('popup');
+            popup.classList.remove('hidden');
+            setTimeout(() => {
+                popup.classList.add('hidden');
+            }, 3000);
+        }
+        function showupdate() {
+            const popup = document.getElementById('upopup');
             popup.classList.remove('hidden');
             setTimeout(() => {
                 popup.classList.add('hidden');

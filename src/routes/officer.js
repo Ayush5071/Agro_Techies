@@ -120,12 +120,15 @@ router.post('/marketPlace', upload.array('image[]', 5), async (req, res) => {
             const name = req.body.cropName[i];
             const price = req.body.price[i];
             const imagePath = req.files[i].path;
-            
-            // Upload image to Cloudinary and get URL
-            const cloudinaryResponse = await uploadOnCloudinary(imagePath);
-            console.log("thisis response of cloud---",cloudinaryResponse)
+
+            const cloudinaryResponse = await uploadOnCloudinary(imagePath); // Upload image to Cloudinary
+            if (!cloudinaryResponse) {
+                throw new Error('Cloudinary upload failed'); // Handle if Cloudinary upload fails
+            }
+
+            console.log("thisis response of cloud---", cloudinaryResponse)
             const url = cloudinaryResponse.url;
-            console.log("instant url after before set of datas.. -->",url)
+            console.log("instant url after before set of datas.. -->", url)
             console.log(name, price, imagePath);
             
             const crop = await cropPrice.create({
@@ -168,7 +171,6 @@ router.delete('/marketPlace/:cropId', async (req, res) => {
         if (!deletedCrop) {
             return res.status(404).send('Crop not found');
         }
-
         res.status(200).send('Crop deleted successfully');
     } catch (error) {
         console.error('Error deleting crop:', error);
@@ -179,6 +181,9 @@ router.delete('/marketPlace/:cropId', async (req, res) => {
 
 router.get('/addCrops',(req,res)=>{
     res.render('officer_addCrops')
+})
+router.get('/addblog',(req,res)=>{
+    res.render('officer_addblog')
 })
 
 router.post("/signup",officerRegistration);

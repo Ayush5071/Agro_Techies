@@ -14,7 +14,7 @@ import { cropPrice } from "../models/officerCrop.model.js";
 import { orderForm, stripePaymentProcessingGet, stripePaymentProcessingPost, success } from "../controllers/payment.controller.js";
 import { Review } from "../models/review.model.js";
 import { Seller } from "../models/seller.model.js";
-
+import { Comment } from "../models/blogComments.model.js";
 router.get('/payment/:id',stripePaymentProcessingGet);
 router.get("/success/:sellerId",isLoggedIn,success)
 router.post('/payment/:id', isLoggedIn,stripePaymentProcessingPost)
@@ -139,8 +139,9 @@ router.get("/blog",isLoggedIn,async (req,res)=>{
 })
 
 router.get('/blogs/:id',isLoggedIn,async(req,res)=>{
-  const blog = await Blog.findOne({_id:req.params.id})
-  res.render('kisaanIndividualBlog',{blog})
+  const blog = await Blog.findOne({_id:req.params.id});
+  const comments = await Comment.find({blog:blog._id});
+  res.render('kisaanIndividualBlog',{blog,comments});
 })
 router.get("/market",isLoggedIn,async (req,res)=>{
   const product = await Product.find();
@@ -150,7 +151,21 @@ router.get('/weather', weatherApi)
 router.get('/weether',isLoggedIn,(req,res)=>{
   res.render('weather')
 })
+router.post('/comment/:blogId',isLoggedIn,async(req,res)=>{
+  const blogId = req.params.blogId
+  const blog = await Blog.findOne({_id:req.params.blogId});
+  const kisaan = await Kisaan.findOne({username:req.user.username});
 
+  const comment = await Comment.create({
+    comment:req.body.comment,
+    kisaanImage:kisaan.profileImage,
+    user:kisaan.username,
+    blog:blog._id
+  });
+  await comment.save();
+
+  res.redirect(`/kisaan/blogs/${blogId}`)
+})
 router.get('/dashboard',isLoggedIn,async(req,res)=>{
   const username = req.user.username
   const kisaan = await Kisaan.findOne({username});

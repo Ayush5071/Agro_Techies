@@ -21,7 +21,7 @@ const farmerRegistration = async(req,res)=>{
       Kisaan.register(data,req.body.password)
       .then(function(registereduser){
         passport.authenticate("farmer-local")(req,res,function(){
-          res.redirect('/kisaan/home')
+          res.redirect('/kisaan/profile')
         })
       })
     } catch (error) {
@@ -43,7 +43,7 @@ const farmerRegistration = async(req,res)=>{
         Officer.register(data, req.body.password)
         .then(function (registereduser) {
           passport.authenticate("officer-local")(req, res, function () {
-            res.redirect("/officer/home");
+            res.redirect("/officer/profile");
           });
         })
         .catch(function (error) {
@@ -70,7 +70,7 @@ const farmerRegistration = async(req,res)=>{
         Seller.register(data, req.body.password)
         .then(function (registereduser) {
           passport.authenticate("seller-local")(req, res, function () {
-            res.redirect("/seller/home");
+            res.redirect("/seller/profile");
           });
         })
         .catch(function (error) {
