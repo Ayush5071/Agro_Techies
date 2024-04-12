@@ -31,19 +31,18 @@ ScrollTrigger.refresh();
 //   el: document.querySelector('#main'),
 //   smooth: true
 // });
-var elemc = document.querySelector("#elem-container")
-var image = document.querySelector("#fixed-image")
-elemc.addEventListener("mouseenter",function(){
- image.style.display = "block"
-})
-elemc.addEventListener("mouseleave",function(){
-  image.style.display = "none"
-})
-
-var elems = document.querySelectorAll(".elem")
-elems.forEach(function(e){
-    e.addEventListener("mouseenter",function(){
-      var image1 = e.getAttribute("data-image")
-      image.style.backgroundImage = `url(${image1})`
-    })
-})
+// var elemc = document.querySelector("#elem-container")
+// var image = document.querySelector("#fixed-image")
+// elemc.addEventListener("mouseenter",function(){
+//  image.style.display = "block"
+// })
+// elemc.addEventListener("mouseleave",function(){
+//   image.style.display = "none"
+// })
+// var elems = document.querySelectorAll(".elem")
+// elems.forEach(function(e){
+//     e.addEventListener("mouseenter",function(){
+//       var image1 = e.getAttribute("data-image")
+//       image.style.backgroundImage = `url(${image1})`
+//     })
+// })

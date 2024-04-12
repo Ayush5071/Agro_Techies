@@ -15,10 +15,10 @@ import { orderForm, stripePaymentProcessingGet, stripePaymentProcessingPost, suc
 import { Review } from "../models/review.model.js";
 import { Seller } from "../models/seller.model.js";
 import { Comment } from "../models/blogComments.model.js";
+import { Redeem } from "../models/redeem.model.js";
 router.get('/payment/:id',stripePaymentProcessingGet);
 router.get("/success/:sellerId",isLoggedIn,success)
 router.post('/payment/:id', isLoggedIn,stripePaymentProcessingPost)
-
 router.post("/place-order/:id",isLoggedIn,orderForm)
 
 router.get('/signup',signup)
@@ -124,8 +124,7 @@ router.post("/review/:id", isLoggedIn, upload.single("reviewImage"), async (req,
   }
 });
 
-
-
+router.get('/logout',logout)
 
 router.get('/marketPlace',isLoggedIn,showmarketPlace);
 router.post('/marketPlace/:cropName',isLoggedIn,sellingCrop);
@@ -142,6 +141,18 @@ router.get('/blogs/:id',isLoggedIn,async(req,res)=>{
   const blog = await Blog.findOne({_id:req.params.id});
   const comments = await Comment.find({blog:blog._id});
   res.render('kisaanIndividualBlog',{blog,comments});
+})
+router.post('/redeem',isLoggedIn, async(req,res)=>{
+  const kisaan = await Kisaan.findOne({username:req.user.username})
+  const {account,ifsc,accountNumber} = req.body
+  const redeem = await Redeem.create({
+    account,
+    accountNumber,ifsc,kisaan:kisaan._id,balance:kisaan.balance
+  })
+  await redeem.save();
+  kisaan.balance = 0;
+  await kisaan.save();
+  res.redirect('/kisaan/profile')
 })
 router.get("/market",isLoggedIn,async (req,res)=>{
   const product = await Product.find();

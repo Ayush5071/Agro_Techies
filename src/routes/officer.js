@@ -1,4 +1,4 @@
-import express from "express"
+import express, { request } from "express"
 const router = express.Router()
 import { Blog } from "../models/blog.model.js";
 import { isLoggedIn, logout, officerLogin, officerRegistration } from "../controllers/auth.controller.js";
@@ -9,6 +9,7 @@ import { cropPrice } from '../models/officerCrop.model.js';
 import { upload } from "../middlewares/multer.middleware.js";
 import { uploadOnCloudinary} from "../middlewares/cloudinary.middleware.js";
 import { Mongoose } from "mongoose";
+import { Redeem } from "../models/redeem.model.js";
 
 router.post("/blog", isLoggedIn, upload.single('image'), async (req, res) => {
     try {
@@ -178,5 +179,9 @@ router.get('/addblog',isLoggedIn,(req,res)=>{
 })
 router.post("/signup",officerRegistration);
 router.post('/login', officerLogin)
+router.get('/redeem',isLoggedIn,async (req,res)=>{
+    const requests = await Redeem.find();
+    res.render('redeem',{requests})
+})
 
 export default router;

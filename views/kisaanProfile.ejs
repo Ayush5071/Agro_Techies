@@ -43,9 +43,7 @@
           <li>
             <a href="/kisaan/market">Products</a>
           </li>
-          <li>
-            <a href="">Sold crops</a>
-          </li>
+
           <li>
             <a href="/kisaan/orders">Order History</a>
           </li>
@@ -57,6 +55,9 @@
           </li>
           <li>
             <a href="/kisaan/addcrops">Add Crops</a>
+          </li>
+          <li>
+            <a href="/kisaan/logout">Logout</a>
           </li>
         </ul>
       </div>
@@ -102,9 +103,9 @@
       </div>
       <div class="form">
         <form action="/kisaan/redeem" method="post">
-          <input type="text" class="details" placeholder="Account Number">
-          <input type="text" class="details" placeholder="IFSC Code">
-          <input type="text" class="details" placeholder="Account Holdername">
+          <input type="text" name="accountNumber" class="details" placeholder="Account Number">
+          <input type="text" name="ifsc" class="details" placeholder="IFSC Code">
+          <input type="text" name="account" class="details" placeholder="Account Holdername">
           <br>
           <button type="submit" class="redeem">Redeem</button>
         </form>
