@@ -1,7 +1,7 @@
 import express from "express"
 const router = express.Router()
 import { Seller } from "../models/seller.model.js"
-import { isLoggedIn, sellerLogin, sellerRegistration } from "../controllers/auth.controller.js"
+import { isLoggedIn, logout, sellerLogin, sellerRegistration } from "../controllers/auth.controller.js"
 import  passport  from "passport"
 import { Product } from "../models/product.model.js"
 import { upload } from "../middlewares/multer.middleware.js"
@@ -62,6 +62,7 @@ router.get('/orders',isLoggedIn,async(req,res)=>{
     res.render('sellerOrder',{seller})
 })
 
+router.get('/logout',logout)
 
 router.get('/product/:id',isLoggedIn,async(req,res)=>{
     const product = await Product.findOne({_id:req.params.id})
@@ -83,7 +84,6 @@ router.get('/myproducts',isLoggedIn,async(req,res)=>{
     res.render('myproducts',{seller});
 })
 router.get('/addproduct',isLoggedIn,async(req,res)=>{
-
     res.render('seller_addproduct')
 })
 router.post('/login',sellerLogin)

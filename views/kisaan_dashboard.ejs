@@ -17,18 +17,15 @@
     </main>
 
     <script>
-        // Fetch the balance chart from the backend
         async function fetchBalanceChart() {
             try {
                 const response = await fetch('/balance-chart');
-                const chartImage = await response.blob(); // Get chart image as a blob
-                const imageUrl = URL.createObjectURL(chartImage); // Create object URL for the blob
+                const chartImage = await response.blob(); 
+                const imageUrl = URL.createObjectURL(chartImage); 
 
-                // Create an image element and set its source to the chart image
                 const imgElement = document.createElement('img');
                 imgElement.src = imageUrl;
 
-                // Append the image element to the balanceChartSection
                 const balanceChartSection = document.getElementById('balanceChartSection');
                 balanceChartSection.appendChild(imgElement);
             } catch (error) {
@@ -36,7 +33,6 @@
             }
         }
 
-        // Call the fetchBalanceChart function when the page loads
         window.onload = fetchBalanceChart;
     </script>
 </body>

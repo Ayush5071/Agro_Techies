@@ -15,13 +15,12 @@
         </div>
     </header>
 
-    <!-- Flash message container -->
     <div id="flashMessage" class="fixed top-0 right-0 mt-4 mr-4 bg-green-500 text-white px-4 py-2 rounded shadow hidden">
-        <!-- Flash message will be added here -->
+
     </div>
 
     <main class="container mx-auto px-4 py-8" id="blogContainer">
-        <!-- Blog cards will be added here -->
+
         <% blogs.forEach(blog => { %>
             <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8 blog-card">
                 <img src="<%= blog.image %>" alt="Blog Image" class="w-full h-64 object-cover">
@@ -43,7 +42,7 @@
     </footer>
 
     <script>
-        // Function to display flash message
+
         function showFlashMessage(message, isSuccess) {
             const flashMessage = document.getElementById('flashMessage');
             flashMessage.textContent = message;
@@ -55,30 +54,26 @@
             }, 4000);
         }
 
-        // Function to handle form submission asynchronously
         async function handleDelete(blogId, cardElement) {
             try {
-                const response = await fetch(`/users/blog/${blogId}`, {
+                const response = await fetch(`/officer/blog/${blogId}`, {
                     method: 'DELETE'
                 });
                 if (response.ok) {
-                    // Remove the deleted blog card from the DOM
                     cardElement.remove();
-                    // Show success flash message
                     showFlashMessage('Blog post deleted successfully', true);
                 } else {
                     console.error('Error deleting blog post:', response.statusText);
-                    // Show error flash message
                     showFlashMessage('Failed to delete blog post', false);
                 }
             } catch (error) {
                 console.error('Error deleting blog post:', error);
-                // Show error flash message
+               
                 showFlashMessage('Failed to delete blog post', false);
             }
         }
 
-        // Attach event listeners to delete buttons
+        
         document.addEventListener('click', async (event) => {
             if (event.target.classList.contains('deleteBtn')) {
                 const blogId = event.target.dataset.blogId;

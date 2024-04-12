@@ -40,47 +40,47 @@ const weatherApi = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-const sellingCrop = async (req, res) => {
+  const sellingCrop = async (req, res) => {
     try {
         const cropName = req.params.cropName;
-        const {quantity} = req.body;
+        const { quantity } = req.body;
         const kisaanId = req.user._id;
         
-        const kisaan = await Kisaan.findById(kisaanId).populate('crops');
-        const kisaancrop = kisaan.crops
-        const cropModel = await Crop.findOne({_id:kisaancrop._id});
-        const particularCrop = await cropPrice.findOne({cropName:cropName})
+        const kisaan = await Kisaan.findById(kisaanId);
         if (!kisaan) {
             return res.status(404).send('Kisaan not found');
         }
-        const crop = await cropPrice.findOne({ cropName: cropName });
-        if (!crop) {
+
+        const particularCrop = await cropPrice.findOne({ cropName: cropName });
+        if (!particularCrop) {
             return res.status(404).send('Crop not found');
         }
-  
+
         if (kisaan.crops[cropName] < quantity) {
             return res.status(400).send('Insufficient quantity of crop');
         }
-        const totalPrice = crop.price * quantity;
+
+        const totalPrice = particularCrop.price * quantity;
         kisaan.balance += totalPrice;
         kisaan.crops.set(cropName, kisaan.crops.get(cropName) - quantity);
-        cropModel.set(cropName, cropModel.get(cropName) - quantity);
-        kisaan.soldCrops.push({
-          cropName,
-          quantitySold: quantity,
-          pricePerKg: crop.price,
-          totalPrice
-        });
         particularCrop.totalSelled += totalPrice;
-        particularCrop.save();
+        kisaan.soldCrops.push({
+            cropName,
+            quantitySold: quantity,
+            pricePerKg: particularCrop.price,
+            totalPrice
+        });
+
         await kisaan.save();
-        await cropModel.save();
+        await particularCrop.save();
+
         res.status(200).send('Crop sold successfully');
     } catch (error) {
         console.error('Error selling crop:', error);
         res.status(500).send('Internal Server Error');
     }
-  }
+}
+
 const showmarketPlace = async (req,res)=>{
     const crops = await cropPrice.find();
     res.render('kisaan_marketPlace',{crops})

@@ -3,52 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Sharing</title>
+    <title>Blogs</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto py-8 px-4">
-        <h1 class="text-3xl font-bold mb-8 text-center">Blog Sharing</h1>
 
-        <!-- Blog Form -->
-        <form action="/officer/blog" method="post" enctype="multipart/form-data" class="mb-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input name="heading" placeholder="Heading" type="text" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
-                <input name="content" placeholder="Content" type="text" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
-                <input name="elligibility" placeholder="Eligibility" type="text" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
-                <input name="schemeLink" placeholder="Scheme Link" type="text" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
-                <input type="file" name="image" id="image" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
-                <input type="submit" value="Submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
-            </div>
-        </form>
-
-        <!-- Share Buttons -->
-        <div class="flex justify-center space-x-4 mb-8">
-            <button onclick="shareOnWhatsApp()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:bg-green-700">Share on WhatsApp</button>
-            <button onclick="shareOnInstagram()" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:bg-purple-700">Share on Instagram</button>
+    <nav class="bg-blue-500 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-white text-4xl font-bold">Blogs</h1>
         </div>
+    </nav>
 
-        <!-- Image Upload Form -->
-        <form action="/kisaan/image" method="post" enctype="multipart/form-data" class="mb-8">
-            <input type="file" name="image" id="image" class="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500">
-            <input type="submit" value="Submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 mt-4">
-        </form>
+    <div class="container mx-auto py-8">
+        <h2 class="text-5xl font-semibold mb-8 text-center">Latest Blogs</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8">
+            <% blogs.forEach(blog => { %>
+                <div class="w-2/3 mx-auto bg-white rounded-lg shadow-md p-6">
+                    <img src="<%= blog.image %>" alt="Blog Image" class="w-full h-56 object-cover rounded-md mb-4">
+
+                    <h3 class="text-xl font-semibold mb-2"><%= blog.heading %></h3>
+                    <p class="text-gray-700 mb-4"><%= blog.content.substring(0, 100) %>...</p>
+
+                    <div class="flex items-center justify-between text-gray-500">
+                        <p><%= blog.designation %></p>
+                        <% if (blog.createdAt) { %>
+                            <p><%= blog.createdAt.toDateString() %></p>
+                        <% } else { %>
+                            <p>Unknown Date</p>
+                        <% } %>
+                    </div>
+
+                    <div class="flex items-center mt-4 space-x-4">
+                        <a href="whatsapp://send?text=<%= encodeURIComponent(blog.heading + ' - ' + blog.shareableLink) %>" class="text-green-500 hover:text-green-700" title="Share on WhatsApp" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(blog.shareableLink) %>" class="text-blue-500 hover:text-blue-700" title="Share on Facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
+                    </div>
+
+                    <a href="/kisaan/blogs/<%= blog._id %>" class="block text-center text-blue-500 mt-4 hover:text-blue-700">See More</a>
+                </div>
+            <% }) %>
+        </div>
     </div>
 
-    <script>
-        function shareOnWhatsApp() {
-            const blogTitle = 'test';
-            const shareableLink = ".....";
-            const message = `Check out this blog: ${blogTitle} - ${shareableLink}`;
-            const whatsappURL = `whatsapp://send?text=${encodeURIComponent(message)}`;
-            window.location.href = whatsappURL;
-        }
-
-        function shareOnInstagram() {
-            // Instagram does not allow direct sharing programmatically
-            // You can encourage users to share manually with pre-filled content
-            alert('Share on Instagram: Copy the link and open Instagram to share manually.');
-        }
-    </script>
 </body>
 </html>

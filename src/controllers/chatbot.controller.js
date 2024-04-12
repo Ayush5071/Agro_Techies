@@ -237,8 +237,6 @@ const data = [
     { question: "What is the Mukhyamantri Gramodaya Yojana, and how does it promote holistic development in rural areas of Uttar Pradesh?", answer: "The Mukhyamantri Gramodaya Yojana is a comprehensive rural development scheme for Uttar Pradesh. It focuses on improving infrastructure, healthcare, education, agriculture, and livelihood opportunities in villages to achieve sustainable development and inclusive growth." },
     { question: "What is the Mukhyamantri Gram Swaraj Abhiyan, and how does it empower local self-governance in rural areas of Uttar Pradesh?", answer: "The Mukhyamantri Gram Swaraj Abhiyan is a rural governance initiative aimed at empowering local self-governing institutions such as Panchayati Raj Institutions (PRIs) in Uttar Pradesh. It focuses on decentralizing decision-making, enhancing participatory democracy, and strengthening grassroots democracy to ensure inclusive and effective governance at the village level." }
 
-
-
 ]; 
 
 const questions = data.map(entry => entry.question);

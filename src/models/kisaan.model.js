@@ -44,6 +44,10 @@ const kisaanSchema = new Schema({
     balanceHistory:{
         type:Array,
         default:[]
+    },
+    contact:{
+        type:Number,
+        default:985642124563
     }
 },
 {

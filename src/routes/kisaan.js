@@ -4,7 +4,7 @@ import { Kisaan } from "../models/kisaan.model.js";
 import passport from 'passport';
 import { upload } from "../middlewares/multer.middleware.js";
 import { uploadOnCloudinary } from "../middlewares/cloudinary.middleware.js";
-import { farmerRegistration, isLoggedIn, kisaanLogin } from "../controllers/auth.controller.js";
+import { farmerRegistration, isLoggedIn, kisaanLogin, logout } from "../controllers/auth.controller.js";
 import { Blog } from "../models/blog.model.js";
 import { Inventory, addCrops, addCropsForm, allProducts, login, sellingCrop, showmarketPlace, signup, weatherApi } from "../controllers/kisaan.controller.js";
 import { Product } from "../models/product.model.js";
@@ -14,8 +14,7 @@ import { cropPrice } from "../models/officerCrop.model.js";
 import { orderForm, stripePaymentProcessingGet, stripePaymentProcessingPost, success } from "../controllers/payment.controller.js";
 import { Review } from "../models/review.model.js";
 import { Seller } from "../models/seller.model.js";
-
-
+import { Comment } from "../models/blogComments.model.js";
 router.get('/payment/:id',stripePaymentProcessingGet);
 router.get("/success/:sellerId",isLoggedIn,success)
 router.post('/payment/:id', isLoggedIn,stripePaymentProcessingPost)
@@ -128,35 +127,52 @@ router.post("/review/:id", isLoggedIn, upload.single("reviewImage"), async (req,
 
 
 
-router.get('/marketPlace',isLoggedIn,showmarketPlace)
-router.post('/marketPlace/:cropName',isLoggedIn,sellingCrop)
-router.post('/addCrops', isLoggedIn, addCrops)
-
-router.get('/addCrops',isLoggedIn,addCropsForm)
-
-
-  
+router.get('/marketPlace',isLoggedIn,showmarketPlace);
+router.post('/marketPlace/:cropName',isLoggedIn,sellingCrop);
+router.post('/addCrops', isLoggedIn, addCrops);
+router.get('/addCrops',isLoggedIn,addCropsForm);
 
 router.get("/blog",isLoggedIn,async (req,res)=>{
-  const blogs = await Blog.find()
-  res.render('kisaanBlog',{blogs})
+  const blogs = await Blog.find();
+  console.log(blogs);
+  res.render('blog',{blogs})
 })
 
 router.get('/blogs/:id',isLoggedIn,async(req,res)=>{
-  const blog = await Blog.findOne({_id:req.params.id})
-  res.render('kisaan_blog_detail',{blog})
+  const blog = await Blog.findOne({_id:req.params.id});
+  const comments = await Comment.find({blog:blog._id});
+  res.render('kisaanIndividualBlog',{blog,comments});
 })
 router.get("/market",isLoggedIn,async (req,res)=>{
   const product = await Product.find();
   res.send(product)
 })
 router.get('/weather', weatherApi)
+router.get('/weether',isLoggedIn,(req,res)=>{
+  res.render('weather')
+})
+router.post('/comment/:blogId',isLoggedIn,async(req,res)=>{
+  const blogId = req.params.blogId
+  const blog = await Blog.findOne({_id:req.params.blogId});
+  const kisaan = await Kisaan.findOne({username:req.user.username});
 
+  const comment = await Comment.create({
+    comment:req.body.comment,
+    kisaanImage:kisaan.profileImage,
+    user:kisaan.username,
+    blog:blog._id
+  });
+  await comment.save();
+
+  res.redirect(`/kisaan/blogs/${blogId}`)
+})
+
+router.get('/logout',logout)
 router.get('/dashboard',isLoggedIn,async(req,res)=>{
   const username = req.user.username
   const kisaan = await Kisaan.findOne({username});
   // const balanceHistory = await kisaan.select('balanceHistory').exec();
-  res.render('kisaan_dashboard',{kisaan})
+  res.render('kisaanDashboard',{kisaan})
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //for dashboard .....
@@ -206,8 +222,17 @@ router.get('/balance-chart', async (req, res) => {
       res.status(500).send('Internal Server Error');
   }
 });
+router.get('/soldcrops',isLoggedIn,async(req,res)=>{
+  const username = req.user.username
+  const kisaan = await Kisaan.findOne({username}); 
+  res.json(kisaan.soldCrops);
+})
 
-
+router.get('/shareProduct/:productId',async(req,res)=>{
+  const productId = req.params.productId
+  const product = await Product.findOne({_id:productId})
+  res.render("shareProduct",{product})
+})
 // Route to fetch crop quantity data
 router.get('/crop-quantity', async (req, res) => {
   try {

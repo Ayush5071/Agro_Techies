@@ -6,7 +6,7 @@ import { Product } from "../models/product.model.js";
 
 const addProduct =  async (req, res) => {
     try {
-        const { description, features, price, productName } = req.body;
+        const { description, features, price,type,company,productName } = req.body;
         const username = req.user.username;
         const imagePath = req.file.path;
         console.log(imagePath)
@@ -21,12 +21,14 @@ const addProduct =  async (req, res) => {
             features,
             productName,
             price,
+            type,
+            company,
             productImage: url
         });
         await product.save();
         seller.products.push(product._id);
         await seller.save();
-        res.redirect('/seller/home');
+        res.redirect('/seller/profile');
     } catch (error) {
         console.error('Error adding product:', error);
         res.status(500).send('Error adding product');
