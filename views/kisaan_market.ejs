@@ -7,24 +7,25 @@
     <title>Products</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
-    <style>
-        /* Additional styles can be added here if needed */
-    </style>
+
+
 </head>
 <body class="bg-gray-100 font-sans">
 
-    <!-- Main Container -->
     <div id="main" class="flex flex-col min-h-screen">
-        
-        <!-- Navigation Bar -->
-        <div id="nav" class="bg-blue-500 p-4">
-            <!-- You can add navigation content here if needed -->
+
+        <div id="nav" class="bg-blue-500 py-4">
+            <div class="container mx-auto">
+                <nav class="flex justify-end">
+                    <a href="/kisaan/profile" class="text-white hover:text-gray-200 mr-4">Profile</a>
+                    <a href="/kisaan/marketPlace" class="text-white hover:text-gray-200 mr-4">Market Place</a>
+                    <a href="/kisaan/inventory" class="text-white hover:text-gray-200">Inventory</a>
+                </nav>
+            </div>
         </div>
         
-        <!-- Page Content -->
         <div id="page1" class="container mx-auto py-8">
-            
-            <!-- Search Section -->
+ 
             <div id="search" class="mb-8">
                 <form action="" class="flex items-center justify-between">
                     <input type="search" name="filter" id="filter" placeholder="Search items here" class="w-full px-4 py-2 border rounded-md mr-4">
@@ -37,8 +38,7 @@
                     <button id="voicebtn" type="button" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-900"><i class="ri-mic-line"></i></button>
                 </form>
             </div>
-            
-            <!-- Product Cards Section -->
+
             <div id="products" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <% products.forEach((e) => { %>
                 <div class="product bg-white rounded-lg shadow-md flex">

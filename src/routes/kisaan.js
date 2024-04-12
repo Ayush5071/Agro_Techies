@@ -158,7 +158,7 @@ router.get("/market",isLoggedIn,async (req,res)=>{
   const product = await Product.find();
   res.send(product)
 })
-router.get('/weather', weatherApi)
+router.get('/weather',isLoggedIn, weatherApi)
 router.get('/weether',isLoggedIn,(req,res)=>{
   res.render('weather')
 })
