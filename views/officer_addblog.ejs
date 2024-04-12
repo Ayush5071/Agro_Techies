@@ -61,12 +61,27 @@
 
                 <div class="flex items-center justify-end">
                     <button type="submit"
-                        class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Create
+                        class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 submitbtn">Create
                         Blog</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <script src="https://smtpjs.com/v3/smtp.js" ></script>
+    <script>
+        let btn=document.querySelector("submitbtn");
+
+        btn.addEventListener("click", ()=>{
+            Email.send({
+                SecureToken : "3584c6c7-5bb6-4440-8e03-0f639d67458e",
+                To : 'agrotechies27@gmail.com',
+                From : "agrotechies27@gmail.com",
+                Subject : "New Blog Posted",
+                Body : `Dear <farmer name>, a new blog is posted check it out at <link>`
+            })
+        });
+    </script>
 
 </body>
 
