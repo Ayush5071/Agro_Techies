@@ -8,7 +8,11 @@ import { Product } from "../models/product.model.js";
 
 const weatherApi = async (req, res) => {
     try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=kanpur&appid=${process.env.WEATHER}&units=metric`);
+        const kisaan = await Kisaan.findOne({username:req.user.username})
+        console.log(kisaan)
+        const city = kisaan.city
+        console.log(kisaan.city)
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER}&units=metric`);
         const data = await response.json();
   
         const {
@@ -43,23 +47,26 @@ const weatherApi = async (req, res) => {
   const sellingCrop = async (req, res) => {
     try {
         const cropName = req.params.cropName;
-        console.log(cropName)
+        console.log(cropName);
         const { quantity } = req.body;
-        console.log(quantity)
+        console.log(quantity);
         const kisaanId = req.user._id;
-        const kisaan = await Kisaan.findOne({ _id: kisaanId });
-        console.log("yeeeeeeeeeee")
+        const kisaan = await Kisaan.findOne({ _id: kisaanId }).populate('crops');
+        console.log("yeeeeeeeeeee");
+        console.log(kisaan)
 
         const particularCrop = await cropPrice.findOne({ cropName: cropName });
+        console.log(particularCrop)
         if (!particularCrop) {
             return res.status(404).send('Crop not found');
         }
-        if (kisaan.crops[cropName] < quantity) {
+        if (!kisaan.crops || !kisaan.crops[cropName] || kisaan.crops[cropName] < quantity) {
             return res.status(400).send('Insufficient quantity of crop');
         }
         const totalPrice = particularCrop.price * quantity;
+        console.log(totalPrice)
         kisaan.balance += totalPrice;
-        kisaan.crops.set(cropName, kisaan.crops.get(cropName) - quantity);
+        kisaan.crops[cropName] -= quantity;
         particularCrop.totalSelled += totalPrice;
         kisaan.soldCrops.push({
             cropName,
@@ -75,7 +82,7 @@ const weatherApi = async (req, res) => {
         console.error('Error selling crop:', error);
         res.status(500).send('Internal Server Error');
     }
-};
+}
 
 
 const showmarketPlace = async (req,res)=>{
