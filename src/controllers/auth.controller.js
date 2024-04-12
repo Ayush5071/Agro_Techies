@@ -125,5 +125,11 @@ const farmerRegistration = async(req,res)=>{
       failureRedirect: "/"
     })(req, res, next);
   };
+  const logout = (req, res) => {
+    req.logout();
+    res.redirect('/');
+};
+
+
   
-  export {farmerRegistration,officerRegistration,sellerRegistration,isLoggedIn,kisaanLogin,officerLogin,sellerLogin}
+  export {farmerRegistration,officerRegistration,sellerRegistration,isLoggedIn,kisaanLogin,officerLogin,sellerLogin,logout}

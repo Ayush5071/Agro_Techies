@@ -56,13 +56,11 @@
 
         async function handleDelete(blogId, cardElement) {
             try {
-                const response = await fetch(`/users/blog/${blogId}`, {
+                const response = await fetch(`/officer/blog/${blogId}`, {
                     method: 'DELETE'
                 });
                 if (response.ok) {
-                   
                     cardElement.remove();
-
                     showFlashMessage('Blog post deleted successfully', true);
                 } else {
                     console.error('Error deleting blog post:', response.statusText);

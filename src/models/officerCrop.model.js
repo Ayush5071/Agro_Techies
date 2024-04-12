@@ -7,9 +7,6 @@ const cropPriceSchema = new Schema({
     price: {
         type: Number,
     },
-    image:{
-        type:String
-    },
     totalSelled:{
         type:Number,
         default:0

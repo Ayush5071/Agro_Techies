@@ -28,7 +28,7 @@
                         <p class="text-gray-500 mb-2"><strong>Officer:</strong> <%= blog.officer ? blog.officer : 'N/A' %></p>
                         <p class="text-gray-500 mb-2"><strong>Designation:</strong> <%= blog.designation ? blog.designation : 'N/A' %></p>
                         <p class="text-gray-500 mb-2"><strong>Eligibility:</strong> <%= blog.elligibility ? blog.elligibility : 'N/A' %></p>
-                        <p class="text-gray-500 mb-2"><strong>Scheme Link:</strong> <%= blog.schemeLink ? blog.schemeLink : 'N/A' %></p>
+                        <p class="text-gray-500 mb-2"><strong>Scheme Link:</strong> <a href="<%= blog.schemeLink %>"></a><%= blog.schemeLink ? blog.schemeLink : 'N/A' %></a></p>
 
                         <a href="/kisaan/blogs/<%= blog._id %>" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Details</a>
                         <div class="flex items-center mt-4 space-x-4">

@@ -1,7 +1,7 @@
 import express from "express"
 const router = express.Router()
 import { Blog } from "../models/blog.model.js";
-import { isLoggedIn, officerLogin, officerRegistration } from "../controllers/auth.controller.js";
+import { isLoggedIn, logout, officerLogin, officerRegistration } from "../controllers/auth.controller.js";
 import { Officer } from "../models/officer.model.js"
 import { Seller } from "../models/seller.model.js";
 import  passport  from "passport";
@@ -89,12 +89,19 @@ router.get("/profile",isLoggedIn,async (req,res)=>{
     const totalkisaan = await Officer.countDocuments();
     res.render("officerProfile",{officer,totalkisaan})
 })
-router.get("/blogt",isLoggedIn,async function(req,res){
-    const blogs = Blog.find()
-    const officer = await Officer.findOne({username : req.session.passport.user})
-    console.log(officer)
-    res.render('blogToolkit',{blogs})
-})
+router.get("/blogt", isLoggedIn, async function(req, res) {
+    try {
+        const blogs = await Blog.find();
+        const officer = await Officer.findOne({ username: req.session.passport.user });
+        console.log(officer);
+        console.log("blogs:", blogs);
+        res.render('blogToolkit', { blogs });
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 router.get("/blog",isLoggedIn,async function(req,res){
     const blogs = Blog.find();
     res.render('blog',{blogs})
@@ -109,44 +116,28 @@ router.get('/marketPlace',isLoggedIn,async (req,res)=>{
     const crops = await cropPrice.find();
     res.render('officer_market',{crops})
 })
-router.post('/marketPlace', upload.array('image[]', 5), async (req, res) => {
+router.post('/marketPlace',isLoggedIn,async (req, res) => {
     try {
-        console.log(req.body);
-        const cropData = [];
-        console.log(req.body.cropName)
-        console.log(req.body.price)
-        
-        for (let i = 0; i < req.body.cropName.length; i++) {
-            const name = req.body.cropName[i];
-            const price = req.body.price[i];
-            const imagePath = req.files[i].path;
+        const { 'cropName[]': cropNames, 'price[]': prices } = req.body;
+        for (let i = 0; i < cropNames.length; i++) {
+            const name = cropNames[i];
+            const price = prices[i];
 
-            const cloudinaryResponse = await uploadOnCloudinary(imagePath); // Upload image to Cloudinary
-            if (!cloudinaryResponse) {
-                throw new Error('Cloudinary upload failed'); // Handle if Cloudinary upload fails
-            }
-
-            console.log("thisis response of cloud---", cloudinaryResponse)
-            const url = cloudinaryResponse.url;
-            console.log("instant url after before set of datas.. -->", url)
-            console.log(name, price, imagePath);
-            
             const crop = await cropPrice.create({
                 cropName: name,
                 price: price,
-                image: url
             });
-            console.log("finalCropdata", crop);
-            cropData.push(crop);
         }
 
-        res.status(200).send('Crop prices inserted successfully.');
+        res.redirect('/officer/profile');
     } catch (error) {
         console.error('Error inserting crop prices:', error);
         res.status(500).send('Error inserting crop prices.');
     }
 });
-router.put('/marketPlace/:cropId', async (req, res) => {
+
+router.get('/logout',logout)
+router.put('/marketPlace/:cropId', isLoggedIn,async (req, res) => {
     try {
         const { cropId } = req.params;
         const { price } = req.body;
@@ -163,7 +154,7 @@ router.put('/marketPlace/:cropId', async (req, res) => {
     }
 });
 
-router.delete('/marketPlace/:cropId', async (req, res) => {
+router.delete('/marketPlace/:cropId',isLoggedIn,async (req, res) => {
     try {
         const { cropId } = req.params;
         console.log(cropId)
@@ -179,13 +170,12 @@ router.delete('/marketPlace/:cropId', async (req, res) => {
 });
 
 
-router.get('/addCrops',(req,res)=>{
+router.get('/addCrops',isLoggedIn,(req,res)=>{
     res.render('officer_addCrops')
 })
-router.get('/addblog',(req,res)=>{
+router.get('/addblog',isLoggedIn,(req,res)=>{
     res.render('officer_addblog')
 })
-
 router.post("/signup",officerRegistration);
 router.post('/login', officerLogin)
 

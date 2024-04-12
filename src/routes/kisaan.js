@@ -4,7 +4,7 @@ import { Kisaan } from "../models/kisaan.model.js";
 import passport from 'passport';
 import { upload } from "../middlewares/multer.middleware.js";
 import { uploadOnCloudinary } from "../middlewares/cloudinary.middleware.js";
-import { farmerRegistration, isLoggedIn, kisaanLogin } from "../controllers/auth.controller.js";
+import { farmerRegistration, isLoggedIn, kisaanLogin, logout } from "../controllers/auth.controller.js";
 import { Blog } from "../models/blog.model.js";
 import { Inventory, addCrops, addCropsForm, allProducts, login, sellingCrop, showmarketPlace, signup, weatherApi } from "../controllers/kisaan.controller.js";
 import { Product } from "../models/product.model.js";
@@ -166,6 +166,8 @@ router.post('/comment/:blogId',isLoggedIn,async(req,res)=>{
 
   res.redirect(`/kisaan/blogs/${blogId}`)
 })
+
+router.get('/logout',logout)
 router.get('/dashboard',isLoggedIn,async(req,res)=>{
   const username = req.user.username
   const kisaan = await Kisaan.findOne({username});
