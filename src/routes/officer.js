@@ -36,7 +36,7 @@ router.post("/blog", isLoggedIn, upload.single('image'), async (req, res) => {
         await data.save();
         officer.blogs.push(data._id);
         await officer.save();
-        res.redirect('/officer/');
+        res.redirect('/officer/blogt');
     } catch (error) {
         console.error('Error creating blog:', error);
         res.status(500).json({ error: 'Internal Server Error' });

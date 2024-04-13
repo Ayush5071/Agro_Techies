@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import plm from "passport-local-mongoose"
+import plm from "passport-local-mongoose";
 
 const soldCropSchema = new Schema({
     cropName: String,
@@ -10,51 +10,49 @@ const soldCropSchema = new Schema({
 
 const kisaanSchema = new Schema({
     username: {
-        type:String,
-        required:true,
-        unique:true,
-        lowercase:true,
-        trim:true,
-        index:true  
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true,
+        index: true
     },
-    fullName:String,
-
-    password:String,
-    email:{
-        type:String
+    fullName: String,
+    password: {
+        type: String,
+        minlength: [5, 'Password must be at least 5 characters long']
     },
-    balance : {
-        type:Number,
-        default:0
+    email: String,
+    balance: {
+        type: Number,
+        default: 0
     },
-    crops : {
-        type:Schema.Types.ObjectId,
-        ref:"Crop"
+    crops: {
+        type: Schema.Types.ObjectId,
+        ref: "Crop"
     },
-    state:String,
-    city:String,
-    country:String,
-    landArea:Number,
-    profileImage:String,
-    orders : [{
-        type:Schema.Types.ObjectId,
-        ref:"Order"
+    state: String,
+    city: String,
+    country: String,
+    landArea: Number,
+    profileImage: String,
+    orders: [{
+        type: Schema.Types.ObjectId,
+        ref: "Order"
     }],
-    soldCrops: [soldCropSchema] ,
-    balanceHistory:{
-        type:Array,
-        default:[]
+    soldCrops: [soldCropSchema],
+    balanceHistory: {
+        type: Array,
+        default: []
     },
-    contact:{
-        type:Number,
-        default:985642124563
+    contact: {
+        type: Number,
+        default: 985642124563
     }
-},
-{
-    timestamps:true
-}
+}, {
+    timestamps: true
+});
 
-)
-kisaanSchema.plugin(plm)
+kisaanSchema.plugin(plm);
 
-export const Kisaan = mongoose.model("Kisaan",kisaanSchema)
+export const Kisaan = mongoose.model("Kisaan", kisaanSchema);
