@@ -35,7 +35,7 @@ const blogSchema = new Schema({
 })
 
 blogSchema.pre('save',function(next){
-    this.shareableLink = `http://localhost:8000/users/blog/${this._id}`
+    this.shareableLink = `http://localhost:8000/kisaan/blog/${this._id}`
     next()
 })
 

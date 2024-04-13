@@ -142,6 +142,11 @@ router.get('/blogs/:id',isLoggedIn,async(req,res)=>{
   const comments = await Comment.find({blog:blog._id});
   res.render('kisaanIndividualBlog',{blog,comments});
 })
+router.get('/blog/:id',async(req,res)=>{
+  const blog = await Blog.findOne({_id:req.params.id});
+  const comments = await Comment.find({blog:blog._id});
+  res.render('kisaanIndividualBlog',{blog,comments});
+})
 router.post('/redeem',isLoggedIn, async(req,res)=>{
   const kisaan = await Kisaan.findOne({username:req.user.username})
   const {account,ifsc,accountNumber} = req.body
