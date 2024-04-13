@@ -6,11 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="stylesheet" href="/stylesheets/global.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
-    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* CSS for animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -69,15 +67,14 @@
                 document.getElementById('sunrise').textContent = data.sunrise;
                 document.getElementById('sunset').textContent = data.sunset;
 
-                // Create a Chart.js graph to visualize temperature trend
                 const ctx = document.getElementById('weather-chart').getContext('2d');
                 new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: ['Now', '+1h', '+2h', '+3h', '+4h'], // Sample time intervals
+                        labels: ['Now', '+1h', '+2h', '+3h', '+4h'], 
                         datasets: [{
                             label: 'Temperature (°C)',
-                            data: [data.temperature, data.temperature + 1, data.temperature + 2, data.temperature + 1, data.temperature], // Sample temperature data
+                            data: [data.temperature, data.temperature + 1, data.temperature + 2, data.temperature + 1, data.temperature],
                             borderColor: 'rgb(75, 192, 192)',
                             tension: 0.1
                         }]

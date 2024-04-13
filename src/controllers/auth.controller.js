@@ -31,7 +31,7 @@ const farmerRegistration = async(req,res)=>{
   const officerRegistration = async (req, res) => {
     try {
       const { email, username, designation, fullName,contact } = req.body;
-      console.log(username);
+
       const data = new Officer({
         username: username,
         email: email,
@@ -39,7 +39,7 @@ const farmerRegistration = async(req,res)=>{
         fullName: fullName,
         contact:contact
       });
-      console.log(data); // Log data before calling register function
+
         Officer.register(data, req.body.password)
         .then(function (registereduser) {
           passport.authenticate("officer-local")(req, res, function () {

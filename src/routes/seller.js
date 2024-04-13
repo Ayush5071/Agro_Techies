@@ -89,8 +89,7 @@ router.get('/addproduct',isLoggedIn,async(req,res)=>{
 router.post('/login',sellerLogin)
 router.post("/signup",sellerRegistration);
 router.get('/profile',isLoggedIn,async (req,res)=>{
-    const seller = await Seller.findOne({username:req.user.username})
-    console.log(seller)
+    const seller = await Seller.findOne({username:req.user.username}).populate('orders')
     res.render('sellerProfile',{seller})
 })
 router.post("/sellerImage",isLoggedIn,upload.single("profileImage"), async (req, res) => {

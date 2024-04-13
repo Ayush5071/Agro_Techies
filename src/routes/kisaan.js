@@ -62,7 +62,6 @@ router.post("/kisaan-p-image-upload",isLoggedIn,upload.single("image"), async (r
 });
 router.get('/orders',isLoggedIn,async(req,res)=>{
   const kisaan = await Kisaan.findOne({username:req.user.username}).populate('orders')
-  console.log("kkkkkkkkkkkkkkiiiiiissssssssssaaaaaaaaaaaaaaaaaaannnnnnnnnnnnnn===========",kisaan)
   res.render('kisaanOrder',{kisaan})
 })
 router.get('/profile',isLoggedIn,async(req,res)=>{
