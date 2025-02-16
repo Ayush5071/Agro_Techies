@@ -1,8 +1,8 @@
 ## Wow Factor:
 Introducing advanced features to enhance user experience and productivity.
 
-1. **NLP Chat Bot:**
-   - Implemented for kisaans to solve queries using Naive Bayes classification.
+1. **Chat Bot:**
+   - Implemented for kisaans to solve queries using Chatbot.
 
 2. **Voice Search:**
    - Enable voice search capabilities in the product section for easier navigation.
