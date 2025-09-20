@@ -52,5 +52,3 @@ Introducing advanced features to enhance user experience and productivity.
 
 ---
 
-🔗 **Check out the full project on LinkedIn:**  
-[Empowering Kisaans with Next-Gen AgriTech](https://www.linkedin.com/posts/ayush-tiwari-84a823281_empowering-kisaans-with-next-gen-agritech-activity-7189592418441216000-oWNh/?utm_source=share&utm_medium=member_desktop)  
